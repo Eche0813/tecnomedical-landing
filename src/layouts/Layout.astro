@@ -54,9 +54,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
     <!-- Header / Navbar Mínimo -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2 font-bold text-xl text-blue-900 tracking-tight">
-            <span class="p-2 bg-blue-600 text-white rounded-lg leading-none text-base">TM</span>
-            <span>TECNOMEDICALS S.A.S<span class="text-blue-600">.</span></span>
+            <a href="/" class="flex items-center gap-3 group">
+              
+              <img 
+                src="/Logo.jpeg" 
+                alt="Logo Tecnomedical S.A.S." 
+                class="h-10 w-auto object-contain transition-transform group-hover:scale-105"
+              />
+
+              <span class="text-xl font-bold text-slate-900 tracking-tight">
+                TECNOMEDICAL <span class="text-blue-600">S.A.S.</span>
+              </span>
+
             </a>
             
             <nav class="flex items-center gap-6 text-sm font-medium">
