@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-tm-blue: #0082C3;
-  --color-tm-dark: #003B73;
-  --color-tm-text: #1A1A1A;
+  /* Colores corporativos extraídos del Logo de Tecnomedicals S.A.S. */
+  --color-tm-blue: #0082C3;   /* Azul Cian (Letra T, marco del logo) */
+  --color-tm-dark: #003B73;   /* Azul Marino (Letra M, "S.A.S.", textos principales) */
+  --color-tm-text: #1A1A1A;   /* Negro / Gris oscuro para textos de lectura */
 }
