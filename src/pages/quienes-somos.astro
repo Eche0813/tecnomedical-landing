@@ -6,64 +6,112 @@ import Layout from '../layouts/Layout.astro';
   <main class="bg-slate-50 min-h-screen py-12 md:py-20">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-3xl mx-auto mb-16">
-        <span class="text-blue-600 font-semibold text-sm tracking-wider uppercase bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+      <div class="text-center max-w-4xl mx-auto mb-16">
+        <span class="inline-flex items-center gap-2 text-[#0082C3] font-semibold text-xs sm:text-sm tracking-wider uppercase bg-[#0082C3]/10 px-4 py-1.5 rounded-full border border-[#0082C3]/20 mb-6">
+          <span class="w-2 h-2 rounded-full bg-[#0082C3] animate-pulse"></span>
           Nuestra Trayectoria
         </span>
-        <p class="text-lg text-slate-600 leading-relaxed">
-          En TECNOMEDICALS S.A.S. somos una empresa colombiana especializada en soluciones para oxigenación portátil, oxigenoterapia y terapia del sueño. Desde el año 2020, trabajamos para mejorar la movilidad, comodidad y calidad de vida de las personas que requieren soporte respiratorio.
-          Como importadores directos, ofrecemos equipos confiables y de alta calidad, acompañados de asesoría especializada, capacitación para su uso adecuado, mantenimiento y soporte técnico. Nuestro equipo humano está comprometido con brindar una atención cercana, responsable y oportuna durante todo el proceso: desde la elección del equipo hasta el acompañamiento posventa.
-          Más que suministrar dispositivos médicos, proporcionamos soluciones integrales que ofrecen seguridad, autonomía y tranquilidad a nuestros pacientes y sus familias.
+        
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#003B73] tracking-tight mb-6 leading-tight">
+          Transformando la oxigenoterapia en <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0082C3] to-[#003B73]">libertad y tranquilidad</span>
+        </h1>
+
+        <p class="text-lg sm:text-xl text-slate-600 leading-relaxed font-normal mb-8">
+          En <strong class="text-[#003B73]">TECNOMEDICALS S.A.S.</strong> somos una empresa colombiana especializada en soluciones para oxigenación portátil, oxigenoterapia y terapia del sueño. Desde el año 2020, trabajamos para mejorar la movilidad, comodidad y calidad de vida de las personas que requieren soporte respiratorio.
         </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 text-center shadow-xs">
+          <p class="text-3xl sm:text-4xl font-extrabold text-[#0082C3]">2020</p>
+          <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Año de Fundación</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 text-center shadow-xs">
+          <p class="text-3xl sm:text-4xl font-extrabold text-[#003B73]">100%</p>
+          <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Importadores Directos</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 text-center shadow-xs">
+          <p class="text-3xl sm:text-4xl font-extrabold text-[#0082C3]">24/7</p>
+          <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Soporte Técnico</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 text-center shadow-xs">
+          <p class="text-3xl sm:text-4xl font-extrabold text-[#003B73]">Nacional</p>
+          <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Cobertura Colombia</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-sm mb-16">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-[#003B73] mb-4">
+              Acompañamiento integral en cada etapa de tu terapia
+            </h2>
+            <p class="text-slate-600 leading-relaxed mb-4">
+              Como importadores directos, ofrecemos equipos confiables y de alta calidad, acompañados de asesoría especializada, capacitación para su uso adecuado, mantenimiento y soporte técnico.
+            </p>
+            <p class="text-slate-600 leading-relaxed">
+              Nuestro equipo humano está comprometido con brindar una atención cercana, responsable y oportuna durante todo el proceso: desde la elección del equipo hasta el acompañamiento posventa.
+            </p>
+          </div>
+          
+          <div class="bg-[#0082C3]/5 p-6 sm:p-8 rounded-2xl border border-[#0082C3]/20">
+            <blockquote class="text-[#003B73] font-medium italic text-lg leading-snug mb-4">
+              "Más que suministrar dispositivos médicos, proporcionamos soluciones integrales que ofrecen seguridad, autonomía y tranquilidad a nuestros pacientes y sus familias."
+            </blockquote>
+            <span class="text-xs font-bold text-[#0082C3] uppercase tracking-widest block">— Oxígeno Para Tu Vida</span>
+          </div>
+        </div>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 mb-16">
         
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+        <div class="bg-white p-8 rounded-2xl shadow-xs border border-slate-200/80 hover:border-[#0082C3]/40 transition-colors">
+          <div class="w-12 h-12 bg-[#0082C3]/10 text-[#0082C3] rounded-xl flex items-center justify-center mb-6">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">Nuestra Misión</h2>
-          <p class="text-slate-600 leading-relaxed">
+          <h2 class="text-2xl font-bold text-[#003B73] mb-4">Nuestra Misión</h2>
+          <p class="text-slate-600 leading-relaxed mb-4">
             En TECNOMEDICALS S.A.S. brindamos soluciones integrales y especializadas en oxigenoterapia, oxigenación portátil y terapia del sueño, orientadas a mejorar la autonomía, el bienestar y la calidad de vida de nuestros pacientes.
-            Acompañamos a cada persona y a su familia con sensibilidad, empatía y conocimiento, ofreciendo equipos confiables de alta calidad, asesoría personalizada, capacitación, mantenimiento y soporte técnico oportuno. Nuestro compromiso es entregar tranquilidad y seguridad en cada etapa, convirtiéndonos en un aliado cercano para quienes dependen de una terapia respiratoria.
-
+          </p>
+          <p class="text-slate-600 leading-relaxed">
+            Acompañamos a cada persona y a su familia con sensibilidad, empatía y conocimiento, ofreciendo equipos confiables de alta calidad, asesoría personalizada, capacitación, mantenimiento y soporte técnico oportuno.
           </p>
         </div>
 
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center mb-6">
+        <div class="bg-white p-8 rounded-2xl shadow-xs border border-slate-200/80 hover:border-[#003B73]/40 transition-colors">
+          <div class="w-12 h-12 bg-[#003B73]/10 text-[#003B73] rounded-xl flex items-center justify-center mb-6">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 mb-4">Nuestra Visión</h2>
-          <p class="text-slate-600 leading-relaxed">
+          <h2 class="text-2xl font-bold text-[#003B73] mb-4">Nuestra Visión (2032)</h2>
+          <p class="text-slate-600 leading-relaxed mb-4">
             Para el año 2032, seremos una empresa líder y reconocida a nivel nacional en soluciones de oxigenoterapia y terapia del sueño, destacándonos por la calidad de nuestros equipos, la innovación tecnológica y la confianza de nuestros clientes.
-            Trabajaremos para acompañar a cada hogar y contribuir al mejoramiento de la calidad de vida de las personas oxígeno-dependientes, mediante un servicio oportuno, seguro, cercano y empático, respaldado por procesos de excelencia y mejoramiento continuo.
-
+          </p>
+          <p class="text-slate-600 leading-relaxed">
+            Trabajaremos para acompañar a cada hogar y contribuir al mejoramiento de la calidad de vida de las personas oxígeno-dependientes, mediante un servicio oportuno, seguro, cercano y empático.
           </p>
         </div>
 
       </div>
 
-      <div class="bg-gradient-to-r from-blue-900 to-slate-900 rounded-3xl p-8 md:p-12 text-white text-center">
-        <h3 class="text-2xl font-bold mb-8">Nuestros Valores Institucionales</h3>
+      <div class="bg-gradient-to-r from-[#003B73] to-[#0082C3] rounded-3xl p-8 md:p-12 text-white text-center shadow-xl">
+        <h3 class="text-2xl sm:text-3xl font-bold mb-8">Nuestros Valores Institucionales</h3>
         <div class="grid sm:grid-cols-3 gap-6">
-          <div class="p-4 bg-white/5 rounded-xl backdrop-blur-sm border border-white/10">
-            <h4 class="font-semibold text-lg text-teal-300 mb-2">Compromiso Humano</h4>
-            <p class="text-sm text-slate-300">Empatía y dedicación constante a las necesidades del paciente.</p>
+          <div class="p-6 bg-white/10 rounded-2xl backdrop-blur-xs border border-white/20 hover:bg-white/20 transition-colors">
+            <h4 class="font-semibold text-lg text-white mb-2">Compromiso Humano</h4>
+            <p class="text-sm text-blue-100">Empatía y dedicación constante a las necesidades particulares de cada paciente.</p>
           </div>
-          <div class="p-4 bg-white/5 rounded-xl backdrop-blur-sm border border-white/10">
-            <h4 class="font-semibold text-lg text-teal-300 mb-2">Calidad Certificada</h4>
-            <p class="text-sm text-slate-300">Equipos médicos con registros vigentes y riguroso control técnico.</p>
+          <div class="p-6 bg-white/10 rounded-2xl backdrop-blur-xs border border-white/20 hover:bg-white/20 transition-colors">
+            <h4 class="font-semibold text-lg text-white mb-2">Calidad Certificada</h4>
+            <p class="text-sm text-blue-100">Equipos médicos importados con registros y riguroso control técnico.</p>
           </div>
-          <div class="p-4 bg-white/5 rounded-xl backdrop-blur-sm border border-white/10">
-            <h4 class="font-semibold text-lg text-teal-300 mb-2">Respuesta Inmediata</h4>
-            <p class="text-sm text-slate-300">Asesoría personalizada y entrega oportuna cuando más se necesita.</p>
+          <div class="p-6 bg-white/10 rounded-2xl backdrop-blur-xs border border-white/20 hover:bg-white/20 transition-colors">
+            <h4 class="font-semibold text-lg text-white mb-2">Respuesta Inmediata</h4>
+            <p class="text-sm text-blue-100">Asesoría personalizada, capacitación y soporte técnico oportuno.</p>
           </div>
         </div>
       </div>
