@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import TrustBadges from '../components/TrustBadges.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import WhatsappButton from '../components/WhatsappButton.astro';
+import { getProducts } from '../services/getProducts.js';
+
+// Datos Mock (De prueba temporal)
+const mockProducts = [
+  {
+    id: 1,
+    title: "Concentrador de Oxígeno 5 Litros - Marca Olive",
+    price: 3200000,
+    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=400",
+    available: true,
+    category: "Oxigenoterapia"
+  },
+  {
+    id: 2,
+    title: "Equipo CPAP Automático con Humidificador",
+    price: 2850000,
+    image: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&q=80&w=400",
+    available: true,
+    category: "Terapia del Sueño"
+  },
+  {
+    id: 3,
+    title: "Concentrador Portátil de Oxígeno 1-5 L/min",
+    price: 6500000,
+    image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&q=80&w=400",
+    available: true,
+    category: "Portátiles"
+  }
+];
+---
+
+<Layout title="TECNOMEDICALS S.A.S. | Equipos de Oxigenoterapia">
+  <Hero />
+  <HowItWorks />
+  <TrustBadges />
+  <ProductGrid 
+  	products={mockProducts}
+	showHeader={true} 
+  />
+  
+  <!-- Botón opcional para ir a ver todo el catálogo completo -->
+  <div class="text-center pb-16 bg-slate-50">
+    <a 
+      href="/catalogo" 
+      class="inline-flex items-center justify-center px-6 py-3 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold rounded-xl transition shadow-sm gap-2"
+    >
+      Ver Catálogo Completo &rarr;
+    </a>
+  </div>
+  <WhatsappButton />
+</Layout>

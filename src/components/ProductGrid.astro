@@ -1,0 +1,64 @@
+---
+import ProductCard from './ProductCard.astro';
+
+interface Product {
+  id: string | number;
+  title: string;
+  price: number;
+  image: string;
+  available: boolean;
+  category?: string;
+}
+
+interface Props {
+  products: Product[];
+  showHeader?: boolean;
+  title?: string;
+  description?: string;
+}
+
+const { 
+  products, 
+  showHeader = false, 
+  title = "Equipos Respiratorios Destacados", 
+  description = "Conoce nuestra selección de concentradores de oxígeno y equipos CPAP para oxigenoterapia y terapia del sueño, con asesoría especializada, garantía y respaldo posventa." 
+} = Astro.props;
+---
+
+<section id="catalogo" class="py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Encabezado Opcional (se oculta si showHeader es false) -->
+    {showHeader && (
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+          {title}
+        </h2>
+        <p class="mt-4 text-slate-600 text-lg">
+          {description}
+        </p>
+      </div>
+    )}
+
+    <!-- Grilla Responsive -->
+    {products.length > 0 ? (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {products.map((product) => (
+          <ProductCard
+            id={product.id}
+            title={product.title}
+            price={product.price}
+            image={product.image}
+            available={product.available}
+            category={product.category}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
+        <p class="text-slate-500">No hay productos disponibles en este momento.</p>
+      </div>
+    )}
+
+  </div>
+</section>

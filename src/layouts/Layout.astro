@@ -1,0 +1,113 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = "TECNOMEDICALS S.A.S. | Equipos de Oxigenoterapia y Salud en Casa",
+  description = "Acompañamiento, venta y alquiler de concentradores de oxígeno, CPAP y tecnología médica para el cuidado de tu familia con envío a toda Colombia.",
+  image = "/og-image.jpg" // Puedes colocar una imagen por defecto en la carpeta public/
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomedical.com');
+---
+
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primarios -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+    <!-- Google Fonts: Inter para una lectura clara y moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white flex flex-col min-h-screen">
+    
+    <!-- Header / Navbar Mínimo -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 font-bold text-xl text-blue-900 tracking-tight">
+            <span class="p-2 bg-blue-600 text-white rounded-lg leading-none text-base">TM</span>
+            <span>TECNOMEDICALS S.A.S<span class="text-blue-600">.</span></span>
+            </a>
+            
+            <nav class="flex items-center gap-6 text-sm font-medium">
+            <a href="/" class="text-slate-600 hover:text-blue-600 transition">Inicio</a>
+            <a href="/catalogo" class="text-slate-600 hover:text-blue-600 transition font-semibold">Catálogo</a>
+            <a href="/quienes-somos" class="text-slate-600 hover:text-blue-600 transition font-semibold">Quiénes Somos</a>
+            <a 
+                href="https://wa.me/573000000000?text=Hola%20Tecnomedical,%20quisiera%20asesor%C3%ADa" 
+                target="_blank"
+                class="hidden sm:inline-flex items-center px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition"
+            >
+                Contacto
+            </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido Dinámico de la Página -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Footer Institucional -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <p class="text-white font-bold text-lg mb-2">TECNOMEDICALS S.A.S.</p>
+          <p class="text-sm text-slate-400">Especialistas en oxigenación portátil, oxigenoterapia y terapia del sueño. Desde 2020 acompañamos a nuestros pacientes y sus familias con soluciones respiratorias confiables.</p>
+        </div>
+        <div>
+          <p class="text-white font-semibold text-sm mb-2">Atención al Cliente</p>
+          <p class="text-sm">Lunes a Viernes: 8:00 AM - 6:00 PM</p>
+          <p class="text-sm">Sábados: 8:00 AM - 1:00 PM</p>
+        </div>
+        <div>
+          <p class="text-white font-semibold text-sm mb-2">Contáctanos</p>
+          <p class="text-sm">WhatsApp: +57 300 000 0000</p>
+          <p class="text-sm">Correo Electrónico: info@tecnomedical.com</p>
+          <p class="text-sm">Medellín, Colombia</p>
+        </div>
+        <div>
+          <p class="text-white font-semibold text-sm mb-2">Información Legal</p>
+          <p class="text-sm">Política de Tratamiento de Datos.</p>
+          <p class="text-sm">Términos y Condiciones.</p>
+          <p class ="text-sm">Políticas de Envío, Cambios y Garantías.</p>
+        </div>
+      </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-800 text-xs text-center text-slate-500">
+        &copy; {new Date().getFullYear()} TECNOMEDICALS S.A.S. Todos los derechos reservados.
+      </div>
+    </footer>
+
+  </body>
+</html>
