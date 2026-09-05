@@ -13,7 +13,7 @@ const steps = [
   {
     step: "03",
     title: "Recibe tu equipo & Acompañamiento",
-    description: "Si te encuentras en Medellín o municipios cercanos entregamos el equipo en la puerta de tu casa, resolvemos todas tus dudas y te enseñamos a utilizarlo y cuidarlo correctamente. Además, cuentas con nuestro respaldo y además, cuentas con nuestro respaldo y soporte posventa."
+    description: "Si te encuentras en Medellín o municipios cercanos entregamos el equipo en la puerta de tu casa, resolvemos todas tus dudas y te enseñamos a utilizarlo y cuidarlo correctamente. Además, cuentas con nuestro respaldo y soporte posventa."
   }
 ];
 ---
@@ -22,7 +22,7 @@ const steps = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
     <div class="text-center max-w-2xl mx-auto mb-12">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-[#003B73] tracking-tight">
         ¿Cómo adquirir tu equipo en 3 pasos?
       </h2>
       <p class="text-slate-600 text-sm sm:text-base mt-2">Un proceso transparente, rápido y sin complicaciones administrativas.</p>
@@ -30,10 +30,10 @@ const steps = [
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
       {steps.map((item) => (
-        <div class="relative bg-slate-50 rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between">
+        <div class="relative bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between hover:border-[#0082C3]/40 transition-colors">
           <div>
-            <span class="text-4xl font-extrabold text-blue-600/30 block mb-2">{item.step}</span>
-            <h3 class="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
+            <span class="text-4xl font-extrabold text-[#0082C3]/30 block mb-2">{item.step}</span>
+            <h3 class="text-lg font-bold text-[#003B73] mb-2">{item.title}</h3>
             <p class="text-slate-600 text-sm leading-relaxed">{item.description}</p>
           </div>
         </div>

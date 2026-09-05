@@ -28,13 +28,13 @@ const {
 <section id="catalogo" class="py-6">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <!-- Encabezado Opcional (se oculta si showHeader es false) -->
+    <!-- Encabezado Opcional -->
     {showHeader && (
       <div class="text-center max-w-3xl mx-auto mb-12">
-        <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight sm:text-4xl">
+        <h2 class="text-3xl font-extrabold text-[#003B73] tracking-tight sm:text-4xl">
           {title}
         </h2>
-        <p class="mt-4 text-slate-600 text-lg">
+        <p class="mt-4 text-slate-600 text-lg leading-relaxed">
           {description}
         </p>
       </div>
@@ -55,8 +55,8 @@ const {
         ))}
       </div>
     ) : (
-      <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
-        <p class="text-slate-500">No hay productos disponibles en este momento.</p>
+      <div class="text-center py-12 bg-white rounded-2xl border border-slate-200/80 shadow-xs">
+        <p class="text-slate-500 font-medium">No hay productos disponibles en este momento.</p>
       </div>
     )}
 

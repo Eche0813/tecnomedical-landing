@@ -19,20 +19,20 @@ const formattedPrice = new Intl.NumberFormat('es-CO', {
 
 // Mensaje predeterminado dinámico para WhatsApp
 const message = encodeURIComponent(`Hola Tecnomedical, estoy interesado en recibir información sobre el equipo: ${title}.`);
-const whatsappUrl = `https://wa.me/573000000000?text=${message}`;
+const whatsappUrl = `https://wa.me/573504990664?text=${message}`;
 ---
 
-<div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col justify-between group">
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:border-[#0082C3]/50 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col justify-between group">
   
   <div class="p-5">
     <!-- Categoria & Estado -->
     <div class="flex items-center justify-between mb-3">
-      <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
+      <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#0082C3]/10 text-[#0082C3] border border-[#0082C3]/20">
         {category}
       </span>
       {available ? (
-        <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           Disponible
         </span>
       ) : (
@@ -43,7 +43,7 @@ const whatsappUrl = `https://wa.me/573000000000?text=${message}`;
     </div>
 
     <!-- Imagen del producto -->
-    <div class="w-full h-48 bg-slate-50 rounded-xl mb-4 overflow-hidden flex items-center justify-center p-4">
+    <div class="w-full h-48 bg-slate-50 rounded-xl mb-4 overflow-hidden flex items-center justify-center p-4 group-hover:bg-[#0082C3]/5 transition-colors duration-300">
       <img
         src={image}
         alt={title}
@@ -53,12 +53,12 @@ const whatsappUrl = `https://wa.me/573000000000?text=${message}`;
     </div>
 
     <!-- Título y Precio -->
-    <h3 class="text-lg font-bold text-slate-800 line-clamp-2 min-h-[3.5rem] leading-snug">
+    <h3 class="text-lg font-bold text-[#003B73] line-clamp-2 min-h-[3.5rem] leading-snug">
       {title}
     </h3>
     
     <div class="mt-2">
-      <p class="text-2xl font-extrabold text-blue-900 tracking-tight">
+      <p class="text-2xl font-extrabold text-[#0082C3] tracking-tight">
         {formattedPrice}
       </p>
     </div>
@@ -71,7 +71,7 @@ const whatsappUrl = `https://wa.me/573000000000?text=${message}`;
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="w-full inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl transition shadow-sm"
+        class="w-full inline-flex items-center justify-center gap-2 bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 shadow-xs hover:shadow-md"
       >
         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
           <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
