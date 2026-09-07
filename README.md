@@ -68,7 +68,7 @@ Pasos de Ejecución
 
     pnpm run build
 
-📁 Estructura del Proyecto
+## 📁 Estructura del Proyecto
 ```
 
 tecnomedical-landing/
@@ -95,14 +95,14 @@ tecnomedical-landing/
 ├── package.json            # Dependencias del proyecto
 └── README.md               # Documentación del repositorio
 ```
-🎨 Guía de Estilos & Paleta de Colores
+## 🎨 Guía de Estilos & Paleta de Colores
 ```
 Color	Hex	Uso en la Aplicación
 Azul Cian (--color-tm-blue)	#0082C3	Botones de acción, enlaces, acentos y precios
 Azul Marino (--color-tm-dark)	#003B73	Encabezados, tipografía principal, footer
 Texto Lectura (--color-tm-text)	#1A1A1A	Cuerpo de texto y párrafos de lectura
 ```
-📄 Licencia
+## 📄 Licencia
 ```
 Este proyecto es de propiedad privada y exclusiva de TECNOMEDICALS S.A.S. Todos los derechos reservados.
 
