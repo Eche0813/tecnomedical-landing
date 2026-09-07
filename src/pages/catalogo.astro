@@ -1,16 +1,32 @@
 ---
+/**
+ * @fileoverview Página del Catálogo Especializado de TECNOMEDICALS S.A.S.
+ * Consulta la API de Google Sheets en vivo mediante SSR y clasifica los productos por categoría.
+ */
+
+// Desactiva el prerenderizado estático para forzar la consulta en vivo de Google Sheets en cada petición
+export const prerender = false;
+
 import Layout from '../layouts/Layout.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import WhatsappButton from '../components/WhatsappButton.astro';
 import { getProducts } from '../services/getProducts.js';
 
+/**
+ * Carga el catálogo de productos completo desde el servicio.
+ */
 const allProducts = await getProducts();
 
-// Filtrado seguro por categoría
+/**
+ * Filtro de productos pertenecientes a la categoría de Oxigenoterapia Avanzada.
+ */
 const oxigenoterapiaProducts = allProducts.filter(
   p => p.category === "Oxigenoterapia Avanzada"
 );
 
+/**
+ * Filtro de productos pertenecientes a la categoría de Terapia del Sueño.
+ */
 const suenoProducts = allProducts.filter(
   p => p.category === "Terapia del Sueño"
 );
@@ -20,7 +36,7 @@ const suenoProducts = allProducts.filter(
   title="Catálogo de Equipos Médicos | TECNOMEDICALS S.A.S."
   description="Catálogo de oxigenoterapia avanzada y equipos de terapia del sueño CPAP/BiPAP con registro INVIMA en Colombia."
 >
-  <!-- Encabezado de la Página con la paleta de la empresa -->
+  <!-- Encabezado de la Página con Gradiente Corporativo -->
   <section class="bg-gradient-to-b from-[#003B73] via-slate-900 to-slate-900 text-white py-14">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <span class="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-[#0082C3]/20 text-[#0082C3] border border-[#0082C3]/30 mb-4 uppercase tracking-wider">
@@ -34,34 +50,34 @@ const suenoProducts = allProducts.filter(
       </p>
 
       <!-- Botones de Salto Rápido a Secciones -->
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <nav class="mt-8 flex flex-wrap justify-center gap-3" aria-label="Navegación de categorías del catálogo">
         <a 
           href="#oxigenoterapia" 
           class="px-5 py-2.5 rounded-xl bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold text-sm transition-all shadow-xs flex items-center gap-2"
         >
-          <span>💨</span> Oxigenoterapia Avanzada
+          <span aria-hidden="true">💨</span> Oxigenoterapia Avanzada
         </a>
         <a 
           href="#terapia-sueno" 
           class="px-5 py-2.5 rounded-xl bg-[#003B73] hover:bg-[#0082C3] text-white font-semibold text-sm transition-all shadow-xs flex items-center gap-2 border border-white/10"
         >
-          <span>🌙</span> Terapia del Sueño (CPAP / BiPAP)
+          <span aria-hidden="true">🌙</span> Terapia del Sueño (CPAP / BiPAP)
         </a>
-      </div>
+      </nav>
     </div>
   </section>
 
   <main class="bg-slate-50 py-12 space-y-16">
     
     <!-- SECCIÓN 1: Oxigenoterapia Avanzada -->
-    <section id="oxigenoterapia" class="scroll-mt-24">
+    <section id="oxigenoterapia" class="scroll-mt-24" aria-labelledby="heading-oxigenoterapia">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
         <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
-          <div class="w-10 h-10 rounded-xl bg-[#0082C3] text-white flex items-center justify-center font-bold text-xl shadow-xs">
+          <div class="w-10 h-10 rounded-xl bg-[#0082C3] text-white flex items-center justify-center font-bold text-xl shadow-xs" aria-hidden="true">
             💨
           </div>
           <div>
-            <h2 class="text-2xl font-extrabold text-[#003B73]">Oxigenoterapia Avanzada</h2>
+            <h2 id="heading-oxigenoterapia" class="text-2xl font-extrabold text-[#003B73]">Oxigenoterapia Avanzada</h2>
             <p class="text-sm text-slate-600">Concentradores estacionarios, portátiles y accesorios respiratorios.</p>
           </div>
         </div>
@@ -70,14 +86,14 @@ const suenoProducts = allProducts.filter(
     </section>
 
     <!-- SECCIÓN 2: Terapia del Sueño -->
-    <section id="terapia-sueno" class="scroll-mt-24">
+    <section id="terapia-sueno" class="scroll-mt-24" aria-labelledby="heading-sueno">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
         <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
-          <div class="w-10 h-10 rounded-xl bg-[#003B73] text-white flex items-center justify-center font-bold text-xl shadow-xs">
+          <div class="w-10 h-10 rounded-xl bg-[#003B73] text-white flex items-center justify-center font-bold text-xl shadow-xs" aria-hidden="true">
             🌙
           </div>
           <div>
-            <h2 class="text-2xl font-extrabold text-[#003B73]">Terapia del Sueño</h2>
+            <h2 id="heading-sueno" class="text-2xl font-extrabold text-[#003B73]">Terapia del Sueño</h2>
             <p class="text-sm text-slate-600">Dispositivos CPAP, BiPAP y mascarillas anatómicas para apnea del sueño.</p>
           </div>
         </div>

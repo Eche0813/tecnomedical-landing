@@ -1,9 +1,20 @@
 ---
+/**
+ * @fileoverview Layout principal de la aplicación TECNOMEDICALS S.A.S.
+ * Define la estructura HTML base, metas SEO, fuentes globales, header adaptativo y footer.
+ */
+
 import '../styles/global.css';
 
+/**
+ * Propiedades aceptadas por el layout para personalizar el SEO por página.
+ */
 interface Props {
+  /** Título de la página que se mostrará en la pestaña del navegador y tags Open Graph */
   title?: string;
+  /** Meta descripción para posicionamiento en motores de búsqueda */
   description?: string;
+  /** Imagen previa al compartir el enlace en redes sociales */
   image?: string;
 }
 
@@ -13,6 +24,7 @@ const {
   image = "/og-image.jpg"
 } = Astro.props;
 
+// URL canónica para evitar contenido duplicado en motores de búsqueda
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomedical.com');
 ---
 
@@ -45,20 +57,18 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   </head>
+  
   <body class="bg-slate-50 text-[#1A1A1A] font-sans antialiased selection:bg-[#0082C3] selection:text-white flex flex-col min-h-screen">
     
-    <!-- Encabezado y Navegación Principal -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             
-            <!-- Logo Marca -->
             <a href="/" class="flex items-center gap-2.5 sm:gap-3 group no-underline shrink-0">
               <img 
                 src="/Logo.jpeg" 
                 alt="Logo Tecnomedicals S.A.S." 
                 class="h-9 sm:h-11 w-auto object-contain transition-transform group-hover:scale-105"
               />
-
               <div class="flex flex-col">
                 <span class="text-base sm:text-xl font-black text-[#0082C3] tracking-tight leading-none">
                   TECNOMEDICALS <span class="text-[#003B73]">S.A.S.</span>
@@ -66,34 +76,33 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
               </div>
             </a>
             
-            <!-- Navegación Escritorio (Se oculta en pantallas de celular < 768px) -->
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Navegación principal">
               <a href="/" class="text-slate-700 hover:text-[#0082C3] transition">Inicio</a>
               <a href="/catalogo" class="text-slate-700 hover:text-[#0082C3] transition font-semibold">Catálogo</a>
               <a href="/quienes-somos" class="text-slate-700 hover:text-[#0082C3] transition font-semibold">Quiénes Somos</a>
               <a 
                 href="https://wa.me/573000000000?text=Hola%20Tecnomedical,%20quisiera%20asesor%C3%ADa" 
                 target="_blank"
+                rel="noopener noreferrer"
                 class="inline-flex items-center px-4 py-2 rounded-xl bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold text-sm transition-all shadow-xs hover:shadow-md"
               >
                 Contacto
               </a>
             </nav>
 
-            <!-- Botón Menú Hamburguesa (Visible únicamente en móviles) -->
             <button 
               id="menu-toggle-btn"
               type="button" 
               class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
-              aria-label="Abrir menú de navegación"
+              aria-label="Abrir o cerrar menú de navegación"
+              aria-expanded="false"
             >
-              <svg id="menu-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg id="menu-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
         </div>
 
-        <!-- Menú Desplegable Móvil -->
         <div id="mobile-dropdown" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 shadow-lg">
           <a href="/" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Inicio</a>
           <a href="/catalogo" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Catálogo</a>
@@ -101,6 +110,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
           <a 
             href="https://wa.me/573000000000?text=Hola%20Tecnomedical,%20quisiera%20asesor%C3%ADa" 
             target="_blank"
+            rel="noopener noreferrer"
             class="block text-center w-full mt-2 px-4 py-3 rounded-xl bg-[#0082C3] text-white font-bold text-sm shadow-xs"
           >
             Contacto
@@ -151,13 +161,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
       </div>
     </footer>
 
-    <!-- Script para abrir y cerrar el menú móvil -->
     <script>
-      const btn = document.getElementById('menu-toggle-btn');
-      const dropdown = document.getElementById('mobile-dropdown');
+      /**
+       * Inicializa el listener para desplegar/contraer el menú móvil al hacer clic.
+       */
+      const menuBtn = document.getElementById('menu-toggle-btn');
+      const mobileDropdown = document.getElementById('mobile-dropdown');
 
-      btn?.addEventListener('click', () => {
-        dropdown?.classList.toggle('hidden');
+      menuBtn?.addEventListener('click', () => {
+        const isHidden = mobileDropdown?.classList.toggle('hidden');
+        menuBtn.setAttribute('aria-expanded', isHidden ? 'false' : 'true');
       });
     </script>
 

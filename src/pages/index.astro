@@ -1,4 +1,12 @@
 ---
+/**
+ * @fileoverview Página de inicio principal (Landing Page) de TECNOMEDICALS S.A.S.
+ * Muestra el Hero banner, flujo de trabajo, insignias de confianza, productos destacados en vivo y botón flotante de WhatsApp.
+ */
+
+// Desactiva el prerenderizado estático para forzar la consulta en vivo de productos vía SSR en cada petición
+export const prerender = false;
+
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import HowItWorks from '../components/HowItWorks.astro';
@@ -7,20 +15,29 @@ import ProductGrid from '../components/ProductGrid.astro';
 import WhatsappButton from '../components/WhatsappButton.astro';
 import { getProducts } from '../services/getProducts.js';
 
-// Obtenemos los productos reales (desde Google Sheets o Fallback)
+/**
+ * Carga el catálogo completo desde Google Sheets mediante el servicio getProducts.
+ */
 const allProducts = await getProducts();
 
-// Seleccionamos únicamente los primeros 3 productos disponibles para la portada
+/**
+ * Filtra los primeros 3 productos en stock para presentar como destacados en la portada.
+ */
 const featuredProducts = allProducts.filter(p => p.available).slice(0, 3);
 ---
 
 <Layout title="TECNOMEDICALS S.A.S. | Equipos de Oxigenoterapia y Salud en Casa">
+  <!-- Banner Principal e Introducción -->
   <Hero />
+
+  <!-- Pasos para Alquiler/Compra y Beneficios -->
   <HowItWorks />
+
+  <!-- Insignias de Garantía y Confianza -->
   <TrustBadges />
   
-  <!-- Sección de Equipos Destacados -->
-  <section class="bg-slate-50 pt-8 pb-4">
+  <!-- Showcase de Equipos Respiratorios Destacados -->
+  <section class="bg-slate-50 pt-8 pb-4" aria-label="Productos destacados">
     <ProductGrid 
       products={featuredProducts}
       showHeader={true} 
@@ -29,7 +46,7 @@ const featuredProducts = allProducts.filter(p => p.available).slice(0, 3);
     />
   </section>
   
-  <!-- Botón hacia el Catálogo Completo -->
+  <!-- Llamado a la Acción hacia el Catálogo General -->
   <div class="text-center pb-16 bg-slate-50">
     <a 
       href="/catalogo" 
@@ -39,5 +56,6 @@ const featuredProducts = allProducts.filter(p => p.available).slice(0, 3);
     </a>
   </div>
 
+  <!-- Botón de Acción Directa a WhatsApp -->
   <WhatsappButton />
 </Layout>

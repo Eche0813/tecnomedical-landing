@@ -1,6 +1,14 @@
 ---
+/**
+ * @fileoverview Componente de grilla adaptativa para renderizar listados de tarjetas de productos (ProductCard).
+ * Soporta encabezados opcionales, mapeo dinamico de items y estado vacio (fallback UI).
+ */
+
 import ProductCard from './ProductCard.astro';
 
+/**
+ * Estructura de un producto individual esperado por la grilla.
+ */
 interface Product {
   id: string | number;
   title: string;
@@ -10,25 +18,32 @@ interface Product {
   category?: string;
 }
 
+/**
+ * Propiedades configurables para el componente ProductGrid.
+ */
 interface Props {
+  /** Arreglo de productos a renderizar */
   products: Product[];
+  /** Flag opcional para mostrar o hidden el bloque de titulo y descripcion de la grilla */
   showHeader?: boolean;
+  /** Titulo principal de la seccion */
   title?: string;
+  /** Descripcion o subtitulo de la seccion */
   description?: string;
 }
 
 const { 
-  products, 
+  products = [], 
   showHeader = false, 
   title = "Equipos Respiratorios Destacados", 
   description = "Conoce nuestra selección de concentradores de oxígeno y equipos CPAP para oxigenoterapia y terapia del sueño, con asesoría especializada, garantía y respaldo posventa." 
 } = Astro.props;
 ---
 
-<section id="catalogo" class="py-6">
+<section id="catalogo" class="py-6" aria-label={title}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <!-- Encabezado Opcional -->
+    <!-- Encabezado Opcional de la Seccion -->
     {showHeader && (
       <div class="text-center max-w-3xl mx-auto mb-12">
         <h2 class="text-3xl font-extrabold text-[#003B73] tracking-tight sm:text-4xl">
@@ -40,7 +55,7 @@ const {
       </div>
     )}
 
-    <!-- Grilla Responsive -->
+    <!-- Grilla Adaptativa de Productos / Fallback Estado Vacio -->
     {products.length > 0 ? (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {products.map((product) => (

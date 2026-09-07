@@ -1,8 +1,13 @@
+/**
+ * @fileoverview Estilos globales y tokens del tema corporativo para TECNOMEDICALS S.A.S.
+ * Configurado mediante el motor CSS nativo de Tailwind CSS v4.
+ */
+
 @import "tailwindcss";
 
 @theme {
-  /* Colores corporativos extraídos del Logo de Tecnomedicals S.A.S. */
-  --color-tm-blue: #0082C3;   /* Azul Cian (Letra T, marco del logo) */
-  --color-tm-dark: #003B73;   /* Azul Marino (Letra M, "S.A.S.", textos principales) */
-  --color-tm-text: #1A1A1A;   /* Negro / Gris oscuro para textos de lectura */
+  /* Tokens de Colores Corporativos (Extraídos de la identidad de marca / Logo) */
+  --color-tm-blue: #0082C3;   /* Azul Cian principales (Letra T, acentos y botones) */
+  --color-tm-dark: #003B73;   /* Azul Marino (Letra M, headers y textos oscuros) */
+  --color-tm-text: #1A1A1A;   /* Negro / Gris oscuro para lectura tipográfica general */
 }

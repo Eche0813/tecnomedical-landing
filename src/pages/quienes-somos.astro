@@ -1,14 +1,23 @@
 ---
+/**
+ * @fileoverview Página institucional "Quiénes Somos" de TECNOMEDICALS S.A.S.
+ * Presenta la trayectoria, métricas clave, misión, visión a 2032 y valores corporativos.
+ */
+
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Quiénes Somos | Tecnomedical S.A.S.">
+<Layout 
+  title="Quiénes Somos | TECNOMEDICALS S.A.S."
+  description="Conoce la historia, misión, visión y valores de TECNOMEDICALS S.A.S. Especialistas en oxigenoterapia portátil y terapia del sueño desde 2020."
+>
   <main class="bg-slate-50 min-h-screen py-12 md:py-20">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       
+      <!-- Encabezado de Sección y Titular Principal -->
       <div class="text-center max-w-4xl mx-auto mb-16">
         <span class="inline-flex items-center gap-2 text-[#0082C3] font-semibold text-xs sm:text-sm tracking-wider uppercase bg-[#0082C3]/10 px-4 py-1.5 rounded-full border border-[#0082C3]/20 mb-6">
-          <span class="w-2 h-2 rounded-full bg-[#0082C3] animate-pulse"></span>
+          <span class="w-2 h-2 rounded-full bg-[#0082C3] animate-pulse" aria-hidden="true"></span>
           Nuestra Trayectoria
         </span>
         
@@ -21,6 +30,7 @@ import Layout from '../layouts/Layout.astro';
         </p>
       </div>
 
+      <!-- Grid de Métricas y Cifras Clave -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 text-center shadow-xs">
           <p class="text-3xl sm:text-4xl font-extrabold text-[#0082C3]">2020</p>
@@ -40,6 +50,7 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </div>
 
+      <!-- Tarjeta Destacada de Propuesta de Valor & Cita -->
       <div class="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-sm mb-16">
         <div class="grid md:grid-cols-2 gap-8 items-center">
           <div>
@@ -63,11 +74,13 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </div>
 
+      <!-- Secciones de Misión y Visión -->
       <div class="grid md:grid-cols-2 gap-8 mb-16">
         
+        <!-- Misión -->
         <div class="bg-white p-8 rounded-2xl shadow-xs border border-slate-200/80 hover:border-[#0082C3]/40 transition-colors">
           <div class="w-12 h-12 bg-[#0082C3]/10 text-[#0082C3] rounded-xl flex items-center justify-center mb-6">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
@@ -80,9 +93,10 @@ import Layout from '../layouts/Layout.astro';
           </p>
         </div>
 
+        <!-- Visión -->
         <div class="bg-white p-8 rounded-2xl shadow-xs border border-slate-200/80 hover:border-[#003B73]/40 transition-colors">
           <div class="w-12 h-12 bg-[#003B73]/10 text-[#003B73] rounded-xl flex items-center justify-center mb-6">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
@@ -98,19 +112,20 @@ import Layout from '../layouts/Layout.astro';
 
       </div>
 
+      <!-- Valores Institucionales -->
       <div class="bg-gradient-to-r from-[#003B73] to-[#0082C3] rounded-3xl p-8 md:p-12 text-white text-center shadow-xl">
-        <h3 class="text-2xl sm:text-3xl font-bold mb-8">Nuestros Valores Institucionales</h3>
+        <h2 class="text-2xl sm:text-3xl font-bold mb-8">Nuestros Valores Institucionales</h2>
         <div class="grid sm:grid-cols-3 gap-6">
           <div class="p-6 bg-white/10 rounded-2xl backdrop-blur-xs border border-white/20 hover:bg-white/20 transition-colors">
-            <h4 class="font-semibold text-lg text-white mb-2">Compromiso Humano</h4>
+            <h3 class="font-semibold text-lg text-white mb-2">Compromiso Humano</h3>
             <p class="text-sm text-blue-100">Empatía y dedicación constante a las necesidades particulares de cada paciente.</p>
           </div>
           <div class="p-6 bg-white/10 rounded-2xl backdrop-blur-xs border border-white/20 hover:bg-white/20 transition-colors">
-            <h4 class="font-semibold text-lg text-white mb-2">Calidad Certificada</h4>
+            <h3 class="font-semibold text-lg text-white mb-2">Calidad Certificada</h3>
             <p class="text-sm text-blue-100">Equipos médicos importados con registros y riguroso control técnico.</p>
           </div>
           <div class="p-6 bg-white/10 rounded-2xl backdrop-blur-xs border border-white/20 hover:bg-white/20 transition-colors">
-            <h4 class="font-semibold text-lg text-white mb-2">Respuesta Inmediata</h4>
+            <h3 class="font-semibold text-lg text-white mb-2">Respuesta Inmediata</h3>
             <p class="text-sm text-blue-100">Asesoría personalizada, capacitación y soporte técnico oportuno.</p>
           </div>
         </div>

@@ -1,5 +1,23 @@
 ---
-const steps = [
+/**
+ * @fileoverview Componente informativo de pasos para adquisición de equipos en TECNOMEDICALS S.A.S.
+ * Describe el proceso de 3 pasos desde la asesoría inicial hasta la entrega domiciliaria.
+ */
+
+/**
+ * Estructura de cada paso del proceso comercial.
+ * @typedef {Object} StepItem
+ * @property {string} step - Número identificador del paso (ej. "01").
+ * @property {string} title - Título descriptivo de la etapa.
+ * @property {string} description - Explicación detallada del procedimiento.
+ */
+interface StepItem {
+  step: string;
+  title: string;
+  description: string;
+}
+
+const steps: StepItem[] = [
   {
     step: "01",
     title: "Cuéntanos ¿Qué necesitas?",
@@ -18,27 +36,37 @@ const steps = [
 ];
 ---
 
-<section class="py-16 bg-white border-b border-slate-200">
+<section class="py-16 bg-white border-b border-slate-200" aria-label="Cómo adquirir tu equipo">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     
+    <!-- Encabezado de la Sección -->
     <div class="text-center max-w-2xl mx-auto mb-12">
       <h2 class="text-2xl sm:text-3xl font-extrabold text-[#003B73] tracking-tight">
         ¿Cómo adquirir tu equipo en 3 pasos?
       </h2>
-      <p class="text-slate-600 text-sm sm:text-base mt-2">Un proceso transparente, rápido y sin complicaciones administrativas.</p>
+      <p class="text-slate-600 text-sm sm:text-base mt-2">
+        Un proceso transparente, rápido y sin complicaciones administrativas.
+      </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+    <!-- Lista Ordenada de Pasos con Grid Adaptativo -->
+    <ol class="grid grid-cols-1 md:grid-cols-3 gap-8 relative list-none">
       {steps.map((item) => (
-        <div class="relative bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between hover:border-[#0082C3]/40 transition-colors">
+        <li class="relative bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between hover:border-[#0082C3]/40 transition-colors">
           <div>
-            <span class="text-4xl font-extrabold text-[#0082C3]/30 block mb-2">{item.step}</span>
-            <h3 class="text-lg font-bold text-[#003B73] mb-2">{item.title}</h3>
-            <p class="text-slate-600 text-sm leading-relaxed">{item.description}</p>
+            <span class="text-4xl font-extrabold text-[#0082C3]/30 block mb-2" aria-hidden="true">
+              {item.step}
+            </span>
+            <h3 class="text-lg font-bold text-[#003B73] mb-2">
+              {item.title}
+            </h3>
+            <p class="text-slate-600 text-sm leading-relaxed">
+              {item.description}
+            </p>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ol>
 
   </div>
 </section>
