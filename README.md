@@ -1,43 +1,64 @@
-# Astro Starter Kit: Minimal
+# 🏥 TECNOMEDICALS S.A.S. — Landing Page & Catálogo Digital Página web corporativa y catálogo digital interactivo para **TECNOMEDICALS S.A.S.**, empresa colombiana especializada en soluciones de oxigenoterapia portátil, concentradores de oxígeno y equipos para la terapia del sueño (CPAP/BiPAP). El proyecto está diseñado bajo una arquitectura **SSR (Server-Side Rendering)** que permite la gestión automatizada de productos e imágenes en tiempo real mediante **Google Sheets** como CMS Headless. --- ## 🚀 Tecnologías Utilizadas * **Framework:** Astro v5 (Modo Server-Side Rendering) * **Estilos:** Tailwind CSS v4 (Vite Plugin & Native `@theme`) * **Hosting & SSR Adapter:** Vercel via `@astrojs/vercel` * **CMS / Base de Datos:** Google Sheets integrado con **Google Apps Script (GAS)** * **Lenguaje:** JavaScript (ES6+) con documentación **JSDoc** y TypeScript Interfaces --- ## 📋 Arquitectura del Sistema
+                        +-----------------------+
+                        |  Google Sheets (CMS)  |
+                        +-----------+-----------+
+                                    |
+                                    | Apps Script (JSON Web App)
+                                    v
++------------------+    HTTP Fetch (no-store)    +-------------------+
+|  Cliente / Web   | <------------------------- | Vercel Serverless |
+|  (Astro + Tailwind)|     HTML + Data en Vivo  |   (Astro v5 SSR)  |
++------------------+                            +-------------------+
 
-```sh
-npm create astro@latest -- --template minimal
-```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
+1. **Gestión de Contenido:** El cliente administra el inventario (títulos, precios, imágenes, categorías y disponibilidad) desde una plantilla en Google Sheets. 2. **API Endpoint:** Un script en Google Apps Script expone los datos de la hoja en formato JSON público. 3. **Renderizado SSR:** En cada petición web, el servidor de Vercel ejecuta `getProducts.js` con `{ cache: 'no-store' }`, garantizando datos e imágenes actualizados de inmediato sin necesidad de reconstruir la aplicación. --- ## 🛠️ Instalación y Configuración Local ### Requisitos Previos * **Node.js**: v18.17.0 o superior * **Gestor de paquetes:** `pnpm` (recomendado) ### Pasos de Ejecución 1. **Clonar el repositorio:**
+git clone https://github.com/eche0813/tecnomedical-landing.git
+cd tecnomedical-landing
+2. **Instalar dependencias:**
+pnpm install
+3. **Iniciar el servidor de desarrollo:**
+pnpm run dev
+Abre http://localhost:4321 en tu navegador para ver la aplicación en ejecución local. 4. **Compilar para producción:**
+pnpm run build
+--- ## 📁 Estructura del Proyecto
+tecnomedical-landing/
+├── public/                 # Assets estáticos (logos, favicon, og-images)
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+│   ├── components/         # Componentes de UI reutilizables
+│   │   ├── Hero.astro
+│   │   ├── HowItWorks.astro
+│   │   ├── ProductCard.astro
+│   │   ├── ProductGrid.astro
+│   │   ├── TrustBadges.astro
+│   │   └── WhatsappButton.astro
+│   ├── layouts/            # Plantillas globales de estructura
+│   │   └── Layout.astro
+│   ├── pages/              # Rutas y vistas de la aplicación (SSR)
+│   │   ├── index.astro
+│   │   ├── catalogo.astro
+│   │   └── quienes-somos.astro
+│   ├── services/           # Integración con APIs externas
+│   │   └── getProducts.js
+│   └── styles/             # Estilos globales y tokens de diseño
+│       └── global.css
+├── astro.config.mjs        # Configuración de Astro, Vercel SSR y Vite
+├── package.json            # Dependencias del proyecto
+└── README.md               # Documentación del repositorio
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+--- ## 🎨 Guía de Estilos & Paleta de Colores Los estilos están centralizados en `src/styles/global.css` mediante la directiva `@theme` de Tailwind v4:
+Color
+Hex
+Uso en la Aplicación
+ 
+Azul Cian (--color-tm-blue)
+#0082C3
+Botones de acción, enlaces, acentos y precios
+Azul Marino (--color-tm-dark)
+#003B73
+Encabezados, tipografía principal, footer
+Texto Lectura (--color-tm-text)
+#1A1A1A
+Cuerpo de texto y párrafos de lectura
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+--- ## 📄 Licencia Este proyecto es de propiedad privada y exclusiva de **TECNOMEDICALS S.A.S.** Todos los derechos reservados.
