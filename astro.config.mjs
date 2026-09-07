@@ -1,12 +1,15 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/vite';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
+  output: 'server',
+  adapter: vercel(),
   vite: {
-    plugins: [tailwind()],
+    plugins: [tailwindcss()],
     server: {
       watch: {
-        usePolling: true // Evita que OneDrive bloquee el detector de cambios
+        usePolling: true
       }
     }
   }
