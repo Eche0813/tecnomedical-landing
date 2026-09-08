@@ -1,8 +1,8 @@
 ---
 /**
- * @fileoverview Componente de tarjeta de producto individual (ProductCard) para TECNOMEDICALS S.A.S.
- * Permite interactuar con un micro-carrusel de imágenes, abrir una ventana emergente (modal Quick View) 
- * con la ficha técnica estructurada en viñetas desde texto plano, y realizar consultas directas a WhatsApp.
+ * @fileoverview Tarjeta de producto cliqueable para TECNOMEDICALS S.A.S.
+ * Permite abrir un modal desplegable con la galería completa de imágenes,
+ * ficha técnica convertida a viñetas desde texto plano y botón directo a WhatsApp.
  * 
  * @module components/ProductCard
  */
@@ -13,21 +13,21 @@ import { SITE_CONFIG } from '../config/site';
  * Propiedades aceptadas por el componente ProductCard.
  */
 interface Props {
-  /** Identificador único del producto en la base de datos */
+  /** Identificador único del producto */
   id: string | number;
-  /** Nombre o título comercial del equipo médico/servicio */
+  /** Nombre comercial del equipo */
   title: string;
-  /** Descripción extensa o ficha técnica en texto plano proveniente de Google Sheets */
+  /** Descripción o ficha técnica extensa en texto plano */
   description?: string;
-  /** Precio unitario en Pesos Colombianos (COP) */
+  /** Precio en Pesos Colombianos (COP) */
   price: number;
-  /** URL de la fotografía principal de portada */
+  /** URL de la imagen principal */
   image: string;
-  /** Arreglo opcional con todas las URLs de imágenes del equipo */
+  /** Arreglo opcional con todas las URLs de imágenes */
   images?: string[];
-  /** Estado de disponibilidad e inventario actual */
+  /** Estado de disponibilidad e inventario */
   available: boolean;
-  /** Categoría comercial (ej. Oxigenoterapia Avanzada, Terapia del Sueño) */
+  /** Categoría comercial del producto */
   category?: string;
 }
 
@@ -42,34 +42,21 @@ const {
   category = "Oxigenoterapia" 
 } = Astro.props;
 
-/**
- * Normalización de la galería de imágenes.
- * Garatiza que siempre exista al menos una imagen en la colección.
- */
 const productImages: string[] = images.length > 0 ? images : [image];
 const hasMultipleImages: boolean = productImages.length > 1;
 
-/**
- * Formateo numérico del precio a la convención de moneda colombiana (COP) sin decimales.
- */
 const formattedPrice: string = new Intl.NumberFormat('es-CO', {
   style: 'currency',
   currency: 'COP',
   maximumFractionDigits: 0
 }).format(price);
 
-/**
- * Generación del enlace dinámico hacia WhatsApp con el número centralizado y mensaje predefinido.
- */
 const message: string = encodeURIComponent(`Hola Tecnomedical, estoy interesado en recibir información sobre el equipo: ${title}.`);
 const whatsappUrl: string = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}`;
 
 /**
- * Parsea el texto plano con saltos de línea y guiones (-) redactado por el cliente en Google Sheets
- * y lo convierte dinámicamente en párrafos y viñetas HTML estilizadas con Tailwind CSS.
- * 
- * @param {string} rawText - Texto sin formato proveniente de la celda de la hoja de cálculo.
- * @returns {string} Cadena con la estructura HTML parseada (párrafos y listas <ul>/<li>).
+ * Convierte el texto plano con guiones (-) proveniente de Google Sheets
+ * en párrafos y listas con viñetas HTML estilizadas.
  */
 function formatDescription(rawText: string = ''): string {
   if (!rawText) {
@@ -81,7 +68,6 @@ function formatDescription(rawText: string = ''): string {
   let inList = false;
 
   lines.forEach(line => {
-    // Detecta prefijos de viñetas habituales (guiones, asterisco o puntos)
     if (line.startsWith('-') || line.startsWith('*') || line.startsWith('•')) {
       if (!inList) {
         html += '<ul class="list-disc pl-5 space-y-1.5 my-3 text-slate-600 font-normal">';
@@ -110,9 +96,10 @@ const formattedDescriptionHtml: string = formatDescription(description);
   class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:border-[#0082C3]/50 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col justify-between group relative product-card" 
   data-product-card
 >
-  <!-- Cuerpo Principal de la Tarjeta (Área Clickeable para el Modal) -->
+  
+  <!-- Cuerpo Clickeable para desplegar el Modal -->
   <div class="p-5 cursor-pointer btn-open-modal">
-    <!-- Categoría & Indicador de Disponibilidad -->
+    <!-- Categoría & Estado de Stock -->
     <div class="flex items-center justify-between mb-3">
       <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#0082C3]/10 text-[#0082C3] border border-[#0082C3]/20">
         {category}
@@ -129,15 +116,13 @@ const formattedDescriptionHtml: string = formatDescription(description);
       )}
     </div>
 
-    <!-- Contenedor del Micro-Carrusel de Imágenes -->
+    <!-- Contenedor del Micro-Carrusel en la Tarjeta -->
     <div class="relative w-full h-48 bg-slate-50 rounded-xl mb-4 overflow-hidden flex items-center justify-center p-4 group/carousel">
-      
-      <!-- Galería de Imágenes Apiladas -->
       <div class="w-full h-full relative flex items-center justify-center">
         {productImages.map((imgUrl, index) => (
           <img
             src={imgUrl}
-            alt={`Fotografía ${index + 1} de ${title}`}
+            alt={`Vista ${index + 1} de ${title}`}
             class={`carousel-img absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
             loading="lazy"
             referrerpolicy="no-referrer"
@@ -148,7 +133,6 @@ const formattedDescriptionHtml: string = formatDescription(description);
         ))}
       </div>
 
-      <!-- Botones de Navegación del Carrusel (Solo si hay múltiples imágenes) -->
       {hasMultipleImages && (
         <>
           <button
@@ -156,9 +140,7 @@ const formattedDescriptionHtml: string = formatDescription(description);
             class="btn-prev absolute left-2 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-slate-800 p-2 rounded-full shadow-md transition-all opacity-0 group-hover/carousel:opacity-100 cursor-pointer active:scale-95"
             aria-label="Imagen anterior"
           >
-            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
-            </svg>
+            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
           </button>
 
           <button
@@ -166,9 +148,7 @@ const formattedDescriptionHtml: string = formatDescription(description);
             class="btn-next absolute right-2 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-slate-800 p-2 rounded-full shadow-md transition-all opacity-0 group-hover/carousel:opacity-100 cursor-pointer active:scale-95"
             aria-label="Siguiente imagen"
           >
-            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-            </svg>
+            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
           </button>
 
           <div class="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex gap-1.5 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-full pointer-events-none">
@@ -180,18 +160,16 @@ const formattedDescriptionHtml: string = formatDescription(description);
       )}
     </div>
 
-    <!-- Título Comercial -->
+    <!-- Título e Indicador Interactivo -->
     <h3 class="text-lg font-bold text-[#003B73] line-clamp-1 leading-snug group-hover:text-[#0082C3] transition-colors">
       {title}
     </h3>
 
-    <!-- Indicador de Detalle Interactivo -->
     <p class="mt-1 text-xs text-slate-400 font-medium flex items-center gap-1 group-hover:text-[#0082C3] transition-colors">
       Clic para ver especificaciones completas
       <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
     </p>
     
-    <!-- Precio en COP -->
     <div class="mt-3">
       <p class="text-2xl font-extrabold text-[#0082C3] tracking-tight">
         {formattedPrice}
@@ -199,7 +177,7 @@ const formattedDescriptionHtml: string = formatDescription(description);
     </div>
   </div>
 
-  <!-- Botón de Acción Directo a WhatsApp -->
+  <!-- Botón WhatsApp Directo (Aislado) -->
   <div class="p-5 pt-0 z-20 relative">
     {available ? (
       <a
@@ -222,11 +200,11 @@ const formattedDescriptionHtml: string = formatDescription(description);
     )}
   </div>
 
-  <!-- Modal Emergente de Ficha Técnica (Quick View) -->
+  <!-- MODAL DESPLEGABLE CON GALERÍA DE IMÁGENES COMPLETA -->
   <dialog class="modal-dialog fixed inset-0 z-50 bg-black/60 backdrop-blur-xs p-4 w-full h-full max-w-none max-h-none border-0 hidden items-center justify-center">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative flex flex-col gap-6">
       
-      <!-- Botón Cierre de Modal -->
+      <!-- Cierre -->
       <button type="button" class="btn-close-modal absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-2 rounded-full hover:bg-slate-100 cursor-pointer transition-colors" aria-label="Cerrar ventana">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
@@ -240,12 +218,36 @@ const formattedDescriptionHtml: string = formatDescription(description);
         <p class="text-xl font-extrabold text-[#0082C3] mt-1">{formattedPrice}</p>
       </div>
 
-      <!-- Imagen Portada en Modal -->
-      <div class="w-full h-64 bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center p-4">
-        <img src={productImages[0]} alt={title} class="max-h-full object-contain" referrerpolicy="no-referrer" />
+      <!-- VISOR PRINCIPAL DE IMAGEN EN EL MODAL -->
+      <div class="space-y-3">
+        <div class="w-full h-64 sm:h-72 bg-slate-50 rounded-2xl overflow-hidden flex items-center justify-center p-4 border border-slate-100">
+          <img 
+            id={`modal-main-img-${id}`}
+            src={productImages[0]} 
+            alt={`Fotografía destacada de ${title}`} 
+            class="max-h-full max-w-full object-contain transition-all duration-300" 
+            referrerpolicy="no-referrer" 
+          />
+        </div>
+
+        <!-- Mosaico/Miniaturas de selección de imagen (Solo si hay más de 1) -->
+        {hasMultipleImages && (
+          <div class="flex items-center gap-2 overflow-x-auto pb-1">
+            {productImages.map((imgUrl, idx) => (
+              <button
+                type="button"
+                class={`modal-thumb-${id} w-16 h-16 rounded-xl border-2 overflow-hidden flex-shrink-0 bg-slate-50 p-1 cursor-pointer transition-all ${idx === 0 ? 'border-[#0082C3] ring-2 ring-[#0082C3]/20' : 'border-slate-200 opacity-60 hover:opacity-100'}`}
+                data-img-src={imgUrl}
+                aria-label={`Ver foto ${idx + 1}`}
+              >
+                <img src={imgUrl} alt="" class="w-full h-full object-contain" referrerpolicy="no-referrer" />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
-      <!-- Contenido Parseado con Viñetas y Estilos -->
+      <!-- Especificaciones y Ficha Técnica -->
       <div class="border-t border-slate-100 pt-4">
         <h4 class="text-sm font-bold text-[#003B73] uppercase tracking-wider mb-3">Especificaciones y Descripción</h4>
         <div class="text-sm">
@@ -253,7 +255,7 @@ const formattedDescriptionHtml: string = formatDescription(description);
         </div>
       </div>
 
-      <!-- Acción Final hacia WhatsApp dentro del Modal -->
+      <!-- Botón de Consulta WhatsApp dentro del Modal -->
       <div class="pt-4 border-t border-slate-100">
         <a
           href={whatsappUrl}
@@ -274,16 +276,39 @@ const formattedDescriptionHtml: string = formatDescription(description);
 
 </article>
 
+<script id={`modal-script-${id}`}>
+  (() => {
+    const card = document.querySelector(`[data-product-card]`);
+    // Cambio interactivo de miniaturas en el modal
+    const mainImg = document.getElementById(`modal-main-img-${id}`);
+    const thumbs = document.querySelectorAll(`.modal-thumb-${id}`);
+
+    thumbs.forEach(thumb => {
+      thumb.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newSrc = thumb.getAttribute('data-img-src');
+        if (mainImg && newSrc) {
+          mainImg.setAttribute('src', newSrc);
+        }
+
+        thumbs.forEach(t => {
+          t.classList.remove('border-[#0082C3]', 'ring-2', 'ring-[#0082C3]/20');
+          t.classList.add('border-slate-200', 'opacity-60');
+        });
+
+        thumb.classList.remove('border-slate-200', 'opacity-60');
+        thumb.classList.add('border-[#0082C3]', 'ring-2', 'ring-[#0082C3]/20');
+      });
+    });
+  })();
+</script>
+
 <script>
-  /**
-   * Inicializa la lógica de interacción para carruseles y ventanas emergentes (modales)
-   * en todas las tarjetas de productos presentes en el DOM.
-   */
-  function initProductCarouselsAndModals(): void {
+  function initProductCarouselsAndModals() {
     const cards = document.querySelectorAll('[data-product-card]');
 
     cards.forEach((card) => {
-      // --- 1. Lógica del Micro-Carrusel de Imágenes ---
+      // Micro-carrusel de la tarjeta
       const images = card.querySelectorAll('.carousel-img');
       const btnPrev = card.querySelector('.btn-prev');
       const btnNext = card.querySelector('.btn-next');
@@ -292,7 +317,7 @@ const formattedDescriptionHtml: string = formatDescription(description);
       if (images.length > 1) {
         let currentIndex = 0;
 
-        const setSlide = (newIndex: number): void => {
+        const setSlide = (newIndex) => {
           images[currentIndex].classList.remove('opacity-100', 'z-10');
           images[currentIndex].classList.add('opacity-0', 'z-0');
 
@@ -312,39 +337,36 @@ const formattedDescriptionHtml: string = formatDescription(description);
           }
         };
 
-        btnPrev?.addEventListener('click', (e: Event) => {
+        btnPrev?.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
           setSlide(currentIndex - 1);
         });
 
-        btnNext?.addEventListener('click', (e: Event) => {
+        btnNext?.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
           setSlide(currentIndex + 1);
         });
       }
 
-      // --- 2. Lógica de Apertura y Cierre del Modal ---
+      // Control del Modal
       const modal = card.querySelector('.modal-dialog');
       const btnOpen = card.querySelector('.btn-open-modal');
       const btnClose = card.querySelector('.btn-close-modal');
       const btnWhatsapp = card.querySelector('.btn-whatsapp');
 
-      // Evita que el clic en el botón principal de WhatsApp abra el modal
-      btnWhatsapp?.addEventListener('click', (e: Event) => {
+      btnWhatsapp?.addEventListener('click', (e) => {
         e.stopPropagation();
       });
 
-      // Abre el modal y deshabilita el scroll del cuerpo de la página
       btnOpen?.addEventListener('click', () => {
         modal?.classList.remove('hidden');
         modal?.classList.add('flex');
         document.body.style.overflow = 'hidden';
       });
 
-      // Cierra el modal y restaura el scroll del cuerpo
-      const closeModal = (): void => {
+      const closeModal = () => {
         modal?.classList.remove('flex');
         modal?.classList.add('hidden');
         document.body.style.overflow = '';
@@ -352,8 +374,7 @@ const formattedDescriptionHtml: string = formatDescription(description);
 
       btnClose?.addEventListener('click', closeModal);
 
-      // Cierre al hacer clic fuera del contenedor principal del modal
-      modal?.addEventListener('click', (e: Event) => {
+      modal?.addEventListener('click', (e) => {
         if (e.target === modal) {
           closeModal();
         }
@@ -361,6 +382,5 @@ const formattedDescriptionHtml: string = formatDescription(description);
     });
   }
 
-  // Ejecuta la inicialización de listeners al cargar el script en el cliente
   initProductCarouselsAndModals();
 </script>
