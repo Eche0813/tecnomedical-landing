@@ -11,9 +11,10 @@ import Layout from '../layouts/Layout.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import WhatsappButton from '../components/WhatsappButton.astro';
 import { getProducts } from '../services/getProducts.js';
+import { SITE_CONFIG } from '../config/site';
 
 /**
- * Carga el catálogo de productos completo desde el servicio.
+ * Carga el catálogo de productos completo desde el servicio de Google Sheets.
  */
 const allProducts = await getProducts();
 
@@ -33,7 +34,7 @@ const suenoProducts = allProducts.filter(
 ---
 
 <Layout 
-  title="Catálogo de Equipos Médicos | TECNOMEDICALS S.A.S."
+  title={`Catálogo de Equipos Médicos | ${SITE_CONFIG.name}`}
   description="Catálogo de oxigenoterapia avanzada y equipos de terapia del sueño CPAP/BiPAP con registro INVIMA en Colombia."
 >
   <!-- Encabezado de la Página con Gradiente Corporativo -->

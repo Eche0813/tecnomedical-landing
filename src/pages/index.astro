@@ -14,6 +14,7 @@ import TrustBadges from '../components/TrustBadges.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import WhatsappButton from '../components/WhatsappButton.astro';
 import { getProducts } from '../services/getProducts.js';
+import { SITE_CONFIG } from '../config/site';
 
 /**
  * Carga el catálogo completo desde Google Sheets mediante el servicio getProducts.
@@ -26,7 +27,7 @@ const allProducts = await getProducts();
 const featuredProducts = allProducts.filter(p => p.available).slice(0, 3);
 ---
 
-<Layout title="TECNOMEDICALS S.A.S. | Equipos de Oxigenoterapia y Salud en Casa">
+<Layout title={`${SITE_CONFIG.name} | Equipos de Oxigenoterapia y Salud en Casa`}>
   <!-- Banner Principal e Introducción -->
   <Hero />
 
