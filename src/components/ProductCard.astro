@@ -4,6 +4,8 @@
  * Renderiza la imagen, categoría, estado de stock, precio formateado en COP y botón directo a WhatsApp.
  */
 
+import { SITE_CONFIG } from '../config/site';
+
 /**
  * Propiedades aceptadas por el componente ProductCard.
  */
@@ -33,9 +35,9 @@ const formattedPrice = new Intl.NumberFormat('es-CO', {
   maximumFractionDigits: 0
 }).format(price);
 
-// Mensaje dinámico preseteado para iniciar conversación en WhatsApp
+// Mensaje dinámico usando la constante de número de WhatsApp centralizada
 const message = encodeURIComponent(`Hola Tecnomedical, estoy interesado en recibir información sobre el equipo: ${title}.`);
-const whatsappUrl = `https://wa.me/573504990664?text=${message}`;
+const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}`;
 ---
 
 <article class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:border-[#0082C3]/50 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col justify-between group">

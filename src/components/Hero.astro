@@ -3,6 +3,11 @@
  * @fileoverview Componente Hero principal para la landing page de TECNOMEDICALS S.A.S.
  * Muestra la propuesta de valor principal, llamadas a la acción (CTAs) e imagen destacada.
  */
+
+import { SITE_CONFIG } from '../config/site';
+
+// Generación dinámica del enlace a WhatsApp
+const heroWhatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent('Hola Tecnomedical, necesito asesoría para un equipo médico')}`;
 ---
 
 <section class="relative bg-gradient-to-b from-[#0082C3]/5 to-slate-50 py-12 lg:py-20 overflow-hidden" aria-label="Introducción principal">
@@ -34,7 +39,7 @@
           </a>
           
           <a
-            href="https://wa.me/573504990664?text=Hola%20Tecnomedical,%20necesito%20asesor%C3%ADa%20para%20un%20equipo%20m%C3%A9dico"
+            href={heroWhatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             class="inline-flex items-center justify-center px-6 py-3.5 border border-slate-200 text-base font-semibold rounded-xl text-slate-700 bg-white hover:bg-slate-50 hover:border-[#0082C3]/40 transition shadow-sm gap-2"

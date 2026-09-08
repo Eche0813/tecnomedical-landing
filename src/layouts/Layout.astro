@@ -5,6 +5,7 @@
  */
 
 import '../styles/global.css';
+import { SITE_CONFIG } from '../config/site';
 
 /**
  * Propiedades aceptadas por el layout para personalizar el SEO por página.
@@ -26,6 +27,9 @@ const {
 
 // URL canónica para evitar contenido duplicado en motores de búsqueda
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomedical.com');
+
+// Enlace dinamizado a WhatsApp utilizando la configuración centralizada
+const headerWhatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(SITE_CONFIG.defaultWhatsappMessage)}`;
 ---
 
 <!DOCTYPE html>
@@ -81,7 +85,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
               <a href="/catalogo" class="text-slate-700 hover:text-[#0082C3] transition font-semibold">Catálogo</a>
               <a href="/quienes-somos" class="text-slate-700 hover:text-[#0082C3] transition font-semibold">Quiénes Somos</a>
               <a 
-                href="https://wa.me/573000000000?text=Hola%20Tecnomedical,%20quisiera%20asesor%C3%ADa" 
+                href={headerWhatsappUrl} 
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center px-4 py-2 rounded-xl bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold text-sm transition-all shadow-xs hover:shadow-md"
@@ -108,7 +112,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
           <a href="/catalogo" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Catálogo</a>
           <a href="/quienes-somos" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Quiénes Somos</a>
           <a 
-            href="https://wa.me/573000000000?text=Hola%20Tecnomedical,%20quisiera%20asesor%C3%ADa" 
+            href={headerWhatsappUrl} 
             target="_blank"
             rel="noopener noreferrer"
             class="block text-center w-full mt-2 px-4 py-3 rounded-xl bg-[#0082C3] text-white font-bold text-sm shadow-xs"
@@ -126,7 +130,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
         
         <div>
-          <p class="text-white font-extrabold text-lg mb-2 tracking-tight">TECNOMEDICALS S.A.S.</p>
+          <p class="text-white font-extrabold text-lg mb-2 tracking-tight">{SITE_CONFIG.name}</p>
           <p class="text-sm text-slate-200 leading-relaxed">
             Especialistas en oxigenación portátil, oxigenoterapia y terapia del sueño. Desde 2020 acompañamos a nuestros pacientes y sus familias con soluciones respiratorias confiables.
           </p>
@@ -140,8 +144,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
 
         <div>
           <p class="text-white font-bold text-sm mb-3 border-b border-white/10 pb-1">Contáctanos</p>
-          <p class="text-sm text-slate-200">WhatsApp: +57 300 000 0000</p>
-          <p class="text-sm text-slate-200 mt-1">Correo Electrónico: info@tecnomedical.com</p>
+          <p class="text-sm text-slate-200">WhatsApp: {SITE_CONFIG.whatsappFormatted}</p>
+          <p class="text-sm text-slate-200 mt-1">Correo Electrónico: tecnomedicalssas@gmail.com</p>
           <p class="text-sm text-slate-200 mt-1">Medellín, Colombia</p>
         </div>
 
@@ -157,7 +161,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://tecnomed
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-white/10 text-xs text-center text-slate-300">
-        &copy; {new Date().getFullYear()} TECNOMEDICALS S.A.S. Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} {SITE_CONFIG.name} Todos los derechos reservados.
       </div>
     </footer>
 

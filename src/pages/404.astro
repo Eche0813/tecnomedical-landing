@@ -6,10 +6,11 @@
 
 import Layout from '../layouts/Layout.astro';
 import WhatsappButton from '../components/WhatsappButton.astro';
+import { SITE_CONFIG } from '../config/site';
 ---
 
 <Layout 
-  title="Página No Encontrada (404) | TECNOMEDICALS S.A.S."
+  title={`Página No Encontrada (404) | ${SITE_CONFIG.name}`}
   description="La página que estás buscando no existe o ha sido movida. Explora nuestro catálogo de equipos de oxigenoterapia o regresa al inicio."
 >
   <main class="min-h-[70vh] bg-slate-50 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
@@ -60,6 +61,6 @@ import WhatsappButton from '../components/WhatsappButton.astro';
     </div>
   </main>
 
-  <!-- Botón de atención comercial vía WhatsApp -->
+  <!-- Botón de atención comercial vía WhatsApp (consume la config centralizada dinámicamente) -->
   <WhatsappButton />
 </Layout>

@@ -33,7 +33,6 @@ const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbzWRF-i8FAUK5H
  */
 export async function getProducts() {
   try {
-    await new Promise(resolve => setTimeout(resolve, 10000));
     const response = await fetch(GOOGLE_SHEET_API, { cache: 'no-store' });
     
     if (!response.ok) {
