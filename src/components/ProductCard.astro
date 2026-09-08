@@ -1,42 +1,118 @@
 ---
 /**
- * @fileoverview Tarjeta de producto con micro-carrusel interactivo corregido.
+ * @fileoverview Componente de tarjeta de producto individual (ProductCard) para TECNOMEDICALS S.A.S.
+ * Permite interactuar con un micro-carrusel de imágenes, abrir una ventana emergente (modal Quick View) 
+ * con la ficha técnica estructurada en viñetas desde texto plano, y realizar consultas directas a WhatsApp.
+ * 
+ * @module components/ProductCard
  */
 
 import { SITE_CONFIG } from '../config/site';
 
+/**
+ * Propiedades aceptadas por el componente ProductCard.
+ */
 interface Props {
+  /** Identificador único del producto en la base de datos */
   id: string | number;
+  /** Nombre o título comercial del equipo médico/servicio */
   title: string;
+  /** Descripción extensa o ficha técnica en texto plano proveniente de Google Sheets */
+  description?: string;
+  /** Precio unitario en Pesos Colombianos (COP) */
   price: number;
+  /** URL de la fotografía principal de portada */
   image: string;
+  /** Arreglo opcional con todas las URLs de imágenes del equipo */
   images?: string[];
+  /** Estado de disponibilidad e inventario actual */
   available: boolean;
+  /** Categoría comercial (ej. Oxigenoterapia Avanzada, Terapia del Sueño) */
   category?: string;
 }
 
-const { id, title, price, image, images = [], available, category = "Oxigenoterapia" } = Astro.props;
+const { 
+  id, 
+  title, 
+  description = '', 
+  price, 
+  image, 
+  images = [], 
+  available, 
+  category = "Oxigenoterapia" 
+} = Astro.props;
 
-const productImages = images.length > 0 ? images : [image];
-const hasMultipleImages = productImages.length > 1;
+/**
+ * Normalización de la galería de imágenes.
+ * Garatiza que siempre exista al menos una imagen en la colección.
+ */
+const productImages: string[] = images.length > 0 ? images : [image];
+const hasMultipleImages: boolean = productImages.length > 1;
 
-const formattedPrice = new Intl.NumberFormat('es-CO', {
+/**
+ * Formateo numérico del precio a la convención de moneda colombiana (COP) sin decimales.
+ */
+const formattedPrice: string = new Intl.NumberFormat('es-CO', {
   style: 'currency',
   currency: 'COP',
   maximumFractionDigits: 0
 }).format(price);
 
-const message = encodeURIComponent(`Hola Tecnomedical, estoy interesado en recibir información sobre el equipo: ${title}.`);
-const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}`;
+/**
+ * Generación del enlace dinámico hacia WhatsApp con el número centralizado y mensaje predefinido.
+ */
+const message: string = encodeURIComponent(`Hola Tecnomedical, estoy interesado en recibir información sobre el equipo: ${title}.`);
+const whatsappUrl: string = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}`;
+
+/**
+ * Parsea el texto plano con saltos de línea y guiones (-) redactado por el cliente en Google Sheets
+ * y lo convierte dinámicamente en párrafos y viñetas HTML estilizadas con Tailwind CSS.
+ * 
+ * @param {string} rawText - Texto sin formato proveniente de la celda de la hoja de cálculo.
+ * @returns {string} Cadena con la estructura HTML parseada (párrafos y listas <ul>/<li>).
+ */
+function formatDescription(rawText: string = ''): string {
+  if (!rawText) {
+    return '<p class="text-slate-500 italic">No hay especificaciones adicionales para este producto.</p>';
+  }
+
+  const lines = rawText.split('\n').map(line => line.trim()).filter(Boolean);
+  let html = '';
+  let inList = false;
+
+  lines.forEach(line => {
+    // Detecta prefijos de viñetas habituales (guiones, asterisco o puntos)
+    if (line.startsWith('-') || line.startsWith('*') || line.startsWith('•')) {
+      if (!inList) {
+        html += '<ul class="list-disc pl-5 space-y-1.5 my-3 text-slate-600 font-normal">';
+        inList = true;
+      }
+      const itemText = line.replace(/^[-*•]\s*/, '');
+      html += `<li>${itemText}</li>`;
+    } else {
+      if (inList) {
+        html += '</ul>';
+        inList = false;
+      }
+      html += `<p class="mb-2 text-slate-700 font-normal leading-relaxed">${line}</p>`;
+    }
+  });
+
+  if (inList) html += '</ul>';
+
+  return html;
+}
+
+const formattedDescriptionHtml: string = formatDescription(description);
 ---
 
 <article 
-  class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:border-[#0082C3]/50 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col justify-between group product-card" 
+  class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:border-[#0082C3]/50 hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col justify-between group relative product-card" 
   data-product-card
 >
-  
-  <div class="p-5">
-    <!-- Categoría & Stock -->
+  <!-- Cuerpo Principal de la Tarjeta (Área Clickeable para el Modal) -->
+  <div class="p-5 cursor-pointer btn-open-modal">
+    <!-- Categoría & Indicador de Disponibilidad -->
     <div class="flex items-center justify-between mb-3">
       <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#0082C3]/10 text-[#0082C3] border border-[#0082C3]/20">
         {category}
@@ -53,15 +129,15 @@ const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}
       )}
     </div>
 
-    <!-- Contenedor del Micro-Carrusel -->
+    <!-- Contenedor del Micro-Carrusel de Imágenes -->
     <div class="relative w-full h-48 bg-slate-50 rounded-xl mb-4 overflow-hidden flex items-center justify-center p-4 group/carousel">
       
-      <!-- Contenedor de Galería de Imágenes -->
+      <!-- Galería de Imágenes Apiladas -->
       <div class="w-full h-full relative flex items-center justify-center">
         {productImages.map((imgUrl, index) => (
           <img
             src={imgUrl}
-            alt={`Vista ${index + 1} de ${title}`}
+            alt={`Fotografía ${index + 1} de ${title}`}
             class={`carousel-img absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
             loading="lazy"
             referrerpolicy="no-referrer"
@@ -72,10 +148,9 @@ const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}
         ))}
       </div>
 
-      <!-- Controles Manuales (Solo si hay más de 1 imagen) -->
+      <!-- Botones de Navegación del Carrusel (Solo si hay múltiples imágenes) -->
       {hasMultipleImages && (
         <>
-          <!-- Botón Izquierda -->
           <button
             type="button"
             class="btn-prev absolute left-2 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-slate-800 p-2 rounded-full shadow-md transition-all opacity-0 group-hover/carousel:opacity-100 cursor-pointer active:scale-95"
@@ -86,7 +161,6 @@ const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}
             </svg>
           </button>
 
-          <!-- Botón Derecha -->
           <button
             type="button"
             class="btn-next absolute right-2 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-slate-800 p-2 rounded-full shadow-md transition-all opacity-0 group-hover/carousel:opacity-100 cursor-pointer active:scale-95"
@@ -97,7 +171,6 @@ const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}
             </svg>
           </button>
 
-          <!-- Indicadores de Puntos (Dots) -->
           <div class="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex gap-1.5 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-full pointer-events-none">
             {productImages.map((_, idx) => (
               <span class={`carousel-dot w-1.5 h-1.5 rounded-full transition-all ${idx === 0 ? 'bg-white w-3' : 'bg-white/50'}`}></span>
@@ -107,30 +180,38 @@ const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}
       )}
     </div>
 
-    <!-- Título y Precio -->
-    <h3 class="text-lg font-bold text-[#003B73] line-clamp-2 min-h-[3.5rem] leading-snug">
+    <!-- Título Comercial -->
+    <h3 class="text-lg font-bold text-[#003B73] line-clamp-1 leading-snug group-hover:text-[#0082C3] transition-colors">
       {title}
     </h3>
+
+    <!-- Indicador de Detalle Interactivo -->
+    <p class="mt-1 text-xs text-slate-400 font-medium flex items-center gap-1 group-hover:text-[#0082C3] transition-colors">
+      Clic para ver especificaciones completas
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </p>
     
-    <div class="mt-2">
+    <!-- Precio en COP -->
+    <div class="mt-3">
       <p class="text-2xl font-extrabold text-[#0082C3] tracking-tight">
         {formattedPrice}
       </p>
     </div>
   </div>
 
-  <!-- Botón WhatsApp -->
-  <div class="p-5 pt-0">
+  <!-- Botón de Acción Directo a WhatsApp -->
+  <div class="p-5 pt-0 z-20 relative">
     {available ? (
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`Consultar disponibilidad de ${title} por WhatsApp`}
-        class="w-full inline-flex items-center justify-center gap-2 bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 shadow-xs hover:shadow-md"
+        class="btn-whatsapp w-full inline-flex items-center justify-center gap-2 bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 shadow-xs hover:shadow-md cursor-pointer"
       >
-        <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#FFFFFF" d="M12.011 2c-5.506 0-9.989 4.478-9.989 9.984 0 1.762.459 3.48 1.33 4.998l-1.413 5.163 5.282-1.387c1.465.799 3.118 1.22 4.79 1.22h.004c5.503 0 9.986-4.478 9.986-9.984 0-2.668-1.037-5.176-2.922-7.062a9.923 9.923 0 0 0-7.068-2.932z"/>
+          <path class="text-[#0082C3]" fill="currentColor" d="M12.031 6.172c-3.181 0-5.767 2.586-5.767 5.767 0 1.267.408 2.44 1.101 3.396l-.723 2.641 2.703-.709a5.726 5.726 0 002.686.672h.003c3.181 0 5.767-2.586 5.767-5.767 0-3.181-2.586-5.767-5.767-5.767zm3.364 8.167c-.141.397-.822.759-1.15.808-.295.044-.667.062-1.077-.068-.248-.079-.566-.184-.915-.338-1.606-.708-2.643-2.333-2.723-2.44-.08-.107-.613-.817-.613-1.558 0-.741.385-1.106.522-1.256.137-.15.298-.188.398-.188.1 0 .201.001.289.006.094.005.221-.036.345.262.128.307.437 1.066.475 1.143.038.077.064.167.013.269-.051.102-.077.167-.154.256-.077.09-.162.201-.231.272-.077.077-.157.161-.067.315.09.154.399.658.857 1.066.589.524 1.084.687 1.238.763.154.077.244.064.334-.038.09-.102.385-.448.488-.601.103-.154.205-.128.346-.077.141.051.898.423 1.052.5.154.077.256.115.294.18.038.064.038.372-.103.769z"/>
         </svg>
         Consultar por WhatsApp
       </a>
@@ -140,62 +221,146 @@ const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${message}
       </button>
     )}
   </div>
+
+  <!-- Modal Emergente de Ficha Técnica (Quick View) -->
+  <dialog class="modal-dialog fixed inset-0 z-50 bg-black/60 backdrop-blur-xs p-4 w-full h-full max-w-none max-h-none border-0 hidden items-center justify-center">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative flex flex-col gap-6">
+      
+      <!-- Botón Cierre de Modal -->
+      <button type="button" class="btn-close-modal absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-2 rounded-full hover:bg-slate-100 cursor-pointer transition-colors" aria-label="Cerrar ventana">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Encabezado del Modal -->
+      <div>
+        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#0082C3]/10 text-[#0082C3] border border-[#0082C3]/20">
+          {category}
+        </span>
+        <h2 class="text-2xl font-bold text-[#003B73] mt-2">{title}</h2>
+        <p class="text-xl font-extrabold text-[#0082C3] mt-1">{formattedPrice}</p>
+      </div>
+
+      <!-- Imagen Portada en Modal -->
+      <div class="w-full h-64 bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center p-4">
+        <img src={productImages[0]} alt={title} class="max-h-full object-contain" referrerpolicy="no-referrer" />
+      </div>
+
+      <!-- Contenido Parseado con Viñetas y Estilos -->
+      <div class="border-t border-slate-100 pt-4">
+        <h4 class="text-sm font-bold text-[#003B73] uppercase tracking-wider mb-3">Especificaciones y Descripción</h4>
+        <div class="text-sm">
+          <Fragment set:html={formattedDescriptionHtml} />
+        </div>
+      </div>
+
+      <!-- Acción Final hacia WhatsApp dentro del Modal -->
+      <div class="pt-4 border-t border-slate-100">
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full inline-flex items-center justify-center gap-2 bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-200 shadow-md"
+        >
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#FFFFFF" d="M12.011 2c-5.506 0-9.989 4.478-9.989 9.984 0 1.762.459 3.48 1.33 4.998l-1.413 5.163 5.282-1.387c1.465.799 3.118 1.22 4.79 1.22h.004c5.503 0 9.986-4.478 9.986-9.984 0-2.668-1.037-5.176-2.922-7.062a9.923 9.923 0 0 0-7.068-2.932z"/>
+            <path class="text-[#0082C3]" fill="currentColor" d="M12.031 6.172c-3.181 0-5.767 2.586-5.767 5.767 0 1.267.408 2.44 1.101 3.396l-.723 2.641 2.703-.709a5.726 5.726 0 002.686.672h.003c3.181 0 5.767-2.586 5.767-5.767 0-3.181-2.586-5.767-5.767-5.767zm3.364 8.167c-.141.397-.822.759-1.15.808-.295.044-.667.062-1.077-.068-.248-.079-.566-.184-.915-.338-1.606-.708-2.643-2.333-2.723-2.44-.08-.107-.613-.817-.613-1.558 0-.741.385-1.106.522-1.256.137-.15.298-.188.398-.188.1 0 .201.001.289.006.094.005.221-.036.345.262.128.307.437 1.066.475 1.143.038.077.064.167.013.269-.051.102-.077.167-.154.256-.077.09-.162.201-.231.272-.077.077-.157.161-.067.315.09.154.399.658.857 1.066.589.524 1.084.687 1.238.763.154.077.244.064.334-.038.09-.102.385-.448.488-.601.103-.154.205-.128.346-.077.141.051.898.423 1.052.5.154.077.256.115.294.18.038.064.038.372-.103.769z"/>
+          </svg>
+          Consultar este equipo por WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </dialog>
+
 </article>
 
 <script>
   /**
-   * Manejador de navegación para todos los micro-carruseles de la página.
+   * Inicializa la lógica de interacción para carruseles y ventanas emergentes (modales)
+   * en todas las tarjetas de productos presentes en el DOM.
    */
-  function initProductCarousels() {
+  function initProductCarouselsAndModals(): void {
     const cards = document.querySelectorAll('[data-product-card]');
 
     cards.forEach((card) => {
+      // --- 1. Lógica del Micro-Carrusel de Imágenes ---
       const images = card.querySelectorAll('.carousel-img');
       const btnPrev = card.querySelector('.btn-prev');
       const btnNext = card.querySelector('.btn-next');
       const dots = card.querySelectorAll('.carousel-dot');
 
-      if (images.length <= 1) return;
+      if (images.length > 1) {
+        let currentIndex = 0;
 
-      let currentIndex = 0;
+        const setSlide = (newIndex: number): void => {
+          images[currentIndex].classList.remove('opacity-100', 'z-10');
+          images[currentIndex].classList.add('opacity-0', 'z-0');
 
-      const setSlide = (newIndex) => {
-        // Quitar estado activo actual
-        images[currentIndex].classList.remove('opacity-100', 'z-10');
-        images[currentIndex].classList.add('opacity-0', 'z-0');
+          if (dots[currentIndex]) {
+            dots[currentIndex].classList.remove('bg-white', 'w-3');
+            dots[currentIndex].classList.add('bg-white/50');
+          }
 
-        if (dots[currentIndex]) {
-          dots[currentIndex].classList.remove('bg-white', 'w-3');
-          dots[currentIndex].classList.add('bg-white/50');
-        }
+          currentIndex = (newIndex + images.length) % images.length;
 
-        // Calcular nuevo índice circular
-        currentIndex = (newIndex + images.length) % images.length;
+          images[currentIndex].classList.remove('opacity-0', 'z-0');
+          images[currentIndex].classList.add('opacity-100', 'z-10');
 
-        // Asignar nuevo estado activo
-        images[currentIndex].classList.remove('opacity-0', 'z-0');
-        images[currentIndex].classList.add('opacity-100', 'z-10');
+          if (dots[currentIndex]) {
+            dots[currentIndex].classList.remove('bg-white/50');
+            dots[currentIndex].classList.add('bg-white', 'w-3');
+          }
+        };
 
-        if (dots[currentIndex]) {
-          dots[currentIndex].classList.remove('bg-white/50');
-          dots[currentIndex].classList.add('bg-white', 'w-3');
-        }
-      };
+        btnPrev?.addEventListener('click', (e: Event) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setSlide(currentIndex - 1);
+        });
 
-      btnPrev?.addEventListener('click', (e) => {
-        e.preventDefault();
+        btnNext?.addEventListener('click', (e: Event) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setSlide(currentIndex + 1);
+        });
+      }
+
+      // --- 2. Lógica de Apertura y Cierre del Modal ---
+      const modal = card.querySelector('.modal-dialog');
+      const btnOpen = card.querySelector('.btn-open-modal');
+      const btnClose = card.querySelector('.btn-close-modal');
+      const btnWhatsapp = card.querySelector('.btn-whatsapp');
+
+      // Evita que el clic en el botón principal de WhatsApp abra el modal
+      btnWhatsapp?.addEventListener('click', (e: Event) => {
         e.stopPropagation();
-        setSlide(currentIndex - 1);
       });
 
-      btnNext?.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setSlide(currentIndex + 1);
+      // Abre el modal y deshabilita el scroll del cuerpo de la página
+      btnOpen?.addEventListener('click', () => {
+        modal?.classList.remove('hidden');
+        modal?.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      });
+
+      // Cierra el modal y restaura el scroll del cuerpo
+      const closeModal = (): void => {
+        modal?.classList.remove('flex');
+        modal?.classList.add('hidden');
+        document.body.style.overflow = '';
+      };
+
+      btnClose?.addEventListener('click', closeModal);
+
+      // Cierre al hacer clic fuera del contenedor principal del modal
+      modal?.addEventListener('click', (e: Event) => {
+        if (e.target === modal) {
+          closeModal();
+        }
       });
     });
   }
 
-  // Ejecuta la inicialización al cargar la página
-  initProductCarousels();
+  // Ejecuta la inicialización de listeners al cargar el script en el cliente
+  initProductCarouselsAndModals();
 </script>
