@@ -1,0 +1,65 @@
+---
+/**
+ * @fileoverview Página personalizada de error 404 (Ruta No Encontrada) para TECNOMEDICALS S.A.S.
+ * Muestra un mensaje institucional accesible y ofrece accesos directos al inicio y al catálogo.
+ */
+
+import Layout from '../layouts/Layout.astro';
+import WhatsappButton from '../components/WhatsappButton.astro';
+---
+
+<Layout 
+  title="Página No Encontrada (404) | TECNOMEDICALS S.A.S."
+  description="La página que estás buscando no existe o ha sido movida. Explora nuestro catálogo de equipos de oxigenoterapia o regresa al inicio."
+>
+  <main class="min-h-[70vh] bg-slate-50 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl w-full text-center">
+      
+      <!-- Indicador Visual 404 -->
+      <div class="relative mb-8">
+        <span class="text-8xl sm:text-9xl font-black text-[#0082C3]/15 select-none tracking-widest block">
+          404
+        </span>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0082C3]/10 text-[#0082C3] border border-[#0082C3]/20">
+            <span class="w-2 h-2 rounded-full bg-[#0082C3] animate-pulse" aria-hidden="true"></span>
+            Enlace No Encontrado
+          </span>
+        </div>
+      </div>
+
+      <!-- Título Principal y Mensaje de Ayuda -->
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-[#003B73] tracking-tight mb-4">
+        ¡Lo sentimos! Esta dirección no está disponible
+      </h1>
+      
+      <p class="text-slate-600 text-base sm:text-lg leading-relaxed mb-10 max-w-lg mx-auto">
+        Es posible que el enlace haya cambiado, se haya escrito de forma incorrecta o la página esté en mantenimiento.
+      </p>
+
+      <!-- Botones de Navegación de Rescate -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a 
+          href="/" 
+          class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold text-base transition-all shadow-md shadow-[#0082C3]/20 gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Volver al Inicio
+        </a>
+
+        <a 
+          href="/catalogo" 
+          class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-white border border-slate-200 text-[#003B73] hover:bg-slate-100 hover:border-[#0082C3]/40 font-semibold text-base transition-all shadow-xs gap-2"
+        >
+          Ver Catálogo de Equipos &rarr;
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Botón de atención comercial vía WhatsApp -->
+  <WhatsappButton />
+</Layout>
