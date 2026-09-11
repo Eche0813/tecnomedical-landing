@@ -1,7 +1,7 @@
 ---
 /**
  * @fileoverview Componente Hero principal para la landing page de TECNOMEDICALS S.A.S.
- * Muestra la propuesta de valor principal, llamadas a la acción (CTAs) e imagen destacada.
+ * Muestra la propuesta de valor principal, llamadas a la acción (CTAs) e imagen destacada ampliada.
  */
 
 import { SITE_CONFIG } from '../config/site';
@@ -52,27 +52,26 @@ const heroWhatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${enco
         </div>
       </div>
 
-      <!-- Imagen Destacada -->
-      <div class="lg:col-span-5 flex justify-center items-center">
-        <div class="relative w-60 max-w-md">
-          <!-- Resplandor decorativo de fondo en el gradiente de la marca -->
-          <div class="absolute -inset-1 bg-gradient-to-r from-[#0082C3] to-[#003B73] rounded-2xl blur opacity-25" aria-hidden="true"></div>
+      <!-- Imagen Destacada Completa (Columna Derecha) -->
+      <div class="lg:col-span-5 flex justify-center items-center w-full">
+        <div class="relative w-full max-w-lg">
           
-          <!-- Contenedor con encuadre ajustado -->
-          <div class="relative bg-white p-3 rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-            <!-- Contenedor ajustado al tamaño del logo -->
-            <div class="w-fit mx-auto p-6 bg-white/80 backdrop-blur-md rounded-2xl border border-slate-100 shadow-lg">
-              <img
-                src="https://lh3.googleusercontent.com/d/1i83nkkkk7PYRa7-gTqPvuw17Ii_MyLIx"
-                alt="Logo oficial de TECNOMEDICALS S.A.S."
-                class="w-full max-w-md h-auto object-contain"
-                referrerpolicy="no-referrer"
-                width="400"
-                height="200"
-                loading="eager"
-              />
-            </div>
+          <!-- Resplandor decorativo de fondo -->
+          <div class="absolute -inset-1.5 bg-gradient-to-r from-[#0082C3] to-[#003B73] rounded-3xl blur-md opacity-20" aria-hidden="true"></div>
+          
+          <!-- Tarjeta marco que se adapta exactamente a la proporción de la foto -->
+          <div class="relative bg-white p-3 sm:p-4 rounded-3xl shadow-2xl border border-slate-100 overflow-hidden">
+            <img
+              src="https://lh3.googleusercontent.com/d/1kX75xQ397MnbySgwJFvISqFMkbN9G-WR"
+              alt="Soluciones respiratorias confiables - TECNOMEDICALS S.A.S."
+              class="w-full h-auto max-h-[420px] object-contain rounded-2xl"
+              referrerpolicy="no-referrer"
+              width="800"
+              height="600"
+              loading="eager"
+            />
           </div>
+
         </div>
       </div>
 
