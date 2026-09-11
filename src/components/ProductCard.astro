@@ -222,10 +222,9 @@ const formattedDescriptionHtml: string = formatDescription(description);
       <div class="space-y-3">
         <div class="w-full h-64 sm:h-72 bg-slate-50 rounded-2xl overflow-hidden flex items-center justify-center p-4 border border-slate-100">
           <img 
-            id={`modal-main-img-${id}`}
+            class="modal-main-display max-h-full max-w-full object-contain transition-all duration-300"
             src={productImages[0]} 
             alt={`Fotografía destacada de ${title}`} 
-            class="max-h-full max-w-full object-contain transition-all duration-300" 
             referrerpolicy="no-referrer" 
           />
         </div>
@@ -236,11 +235,11 @@ const formattedDescriptionHtml: string = formatDescription(description);
             {productImages.map((imgUrl, idx) => (
               <button
                 type="button"
-                class={`modal-thumb-${id} w-16 h-16 rounded-xl border-2 overflow-hidden flex-shrink-0 bg-slate-50 p-1 cursor-pointer transition-all ${idx === 0 ? 'border-[#0082C3] ring-2 ring-[#0082C3]/20' : 'border-slate-200 opacity-60 hover:opacity-100'}`}
+                class={`modal-thumb-btn w-16 h-16 rounded-xl border-2 overflow-hidden flex-shrink-0 bg-slate-50 p-1 cursor-pointer transition-all ${idx === 0 ? 'border-[#0082C3] ring-2 ring-[#0082C3]/20' : 'border-slate-200 opacity-60 hover:opacity-100'}`}
                 data-img-src={imgUrl}
                 aria-label={`Ver foto ${idx + 1}`}
               >
-                <img src={imgUrl} alt="" class="w-full h-full object-contain" referrerpolicy="no-referrer" />
+                <img src={imgUrl} alt="" class="w-full h-full object-contain pointer-events-none" referrerpolicy="no-referrer" />
               </button>
             ))}
           </div>
@@ -276,39 +275,16 @@ const formattedDescriptionHtml: string = formatDescription(description);
 
 </article>
 
-<script id={`modal-script-${id}`}>
-  (() => {
-    const card = document.querySelector(`[data-product-card]`);
-    // Cambio interactivo de miniaturas en el modal
-    const mainImg = document.getElementById(`modal-main-img-${id}`);
-    const thumbs = document.querySelectorAll(`.modal-thumb-${id}`);
-
-    thumbs.forEach(thumb => {
-      thumb.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const newSrc = thumb.getAttribute('data-img-src');
-        if (mainImg && newSrc) {
-          mainImg.setAttribute('src', newSrc);
-        }
-
-        thumbs.forEach(t => {
-          t.classList.remove('border-[#0082C3]', 'ring-2', 'ring-[#0082C3]/20');
-          t.classList.add('border-slate-200', 'opacity-60');
-        });
-
-        thumb.classList.remove('border-slate-200', 'opacity-60');
-        thumb.classList.add('border-[#0082C3]', 'ring-2', 'ring-[#0082C3]/20');
-      });
-    });
-  })();
-</script>
-
 <script>
+  /**
+   * Inicializa la lógica de interacción para carruseles, modales y selector de miniaturas
+   * en todas las tarjetas de productos presentes en el DOM.
+   */
   function initProductCarouselsAndModals() {
     const cards = document.querySelectorAll('[data-product-card]');
 
     cards.forEach((card) => {
-      // Micro-carrusel de la tarjeta
+      // 1. Lógica del Micro-Carrusel de la Tarjeta
       const images = card.querySelectorAll('.carousel-img');
       const btnPrev = card.querySelector('.btn-prev');
       const btnNext = card.querySelector('.btn-next');
@@ -350,29 +326,59 @@ const formattedDescriptionHtml: string = formatDescription(description);
         });
       }
 
-      // Control del Modal
+      // 2. Control del Modal y Galería Interna
       const modal = card.querySelector('.modal-dialog');
       const btnOpen = card.querySelector('.btn-open-modal');
       const btnClose = card.querySelector('.btn-close-modal');
       const btnWhatsapp = card.querySelector('.btn-whatsapp');
+      
+      const modalMainImg = modal?.querySelector('.modal-main-display');
+      const modalThumbs = modal?.querySelectorAll('.modal-thumb-btn');
 
+      // Selección dinámica de miniaturas dentro del modal
+      modalThumbs?.forEach((thumb) => {
+        thumb.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const newSrc = thumb.getAttribute('data-img-src');
+          if (modalMainImg && newSrc) {
+            modalMainImg.setAttribute('src', newSrc);
+          }
+
+          modalThumbs.forEach((t) => {
+            t.classList.remove('border-[#0082C3]', 'ring-2', 'ring-[#0082C3]/20');
+            t.classList.add('border-slate-200', 'opacity-60');
+          });
+
+          thumb.classList.remove('border-slate-200', 'opacity-60');
+          thumb.classList.add('border-[#0082C3]', 'ring-2', 'ring-[#0082C3]/20');
+        });
+      });
+
+      // Evita apertura del modal al presionar el botón de WhatsApp
       btnWhatsapp?.addEventListener('click', (e) => {
         e.stopPropagation();
       });
 
+      // Apertura del modal
       btnOpen?.addEventListener('click', () => {
         modal?.classList.remove('hidden');
         modal?.classList.add('flex');
         document.body.style.overflow = 'hidden';
       });
 
+      // Cierre del modal
       const closeModal = () => {
         modal?.classList.remove('flex');
         modal?.classList.add('hidden');
         document.body.style.overflow = '';
       };
 
-      btnClose?.addEventListener('click', closeModal);
+      btnClose?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeModal();
+      });
 
       modal?.addEventListener('click', (e) => {
         if (e.target === modal) {
@@ -382,5 +388,6 @@ const formattedDescriptionHtml: string = formatDescription(description);
     });
   }
 
+  // Ejecución al cargar la página
   initProductCarouselsAndModals();
 </script>
