@@ -1,7 +1,7 @@
 ---
 /**
  * @fileoverview Página institucional "Quiénes Somos" de TECNOMEDICALS S.A.S.
- * Presenta la trayectoria, métricas clave, misión, visión a 2032 y valores corporativos.
+ * Presenta la trayectoria, métricas clave con contadores animados, misión, visión a 2032 y valores corporativos.
  */
 
 import Layout from '../layouts/Layout.astro';
@@ -34,12 +34,17 @@ import Layout from '../layouts/Layout.astro';
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 text-center shadow-xs">
           <p class="text-3xl sm:text-4xl font-extrabold text-[#0082C3]">2020</p>
-          <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Año de Fundación</p>
+          <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Acompañando tu Bienestar Respiratorio</p>
         </div>
+        
+        <!-- Métrica Animada: +10.000 Familias Acompañadas -->
         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 text-center shadow-xs">
-          <p class="text-3xl sm:text-4xl font-extrabold text-[#003B73]">100%</p>
-          <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Importadores Directos</p>
+          <p class="text-3xl sm:text-4xl font-extrabold text-[#003B73]">
+            +<span id="families-counter">0</span>
+          </p>
+          <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Familias Acompañadas</p>
         </div>
+
         <div class="bg-white p-6 rounded-2xl border border-slate-200/80 text-center shadow-xs">
           <p class="text-3xl sm:text-4xl font-extrabold text-[#0082C3]">24/7</p>
           <p class="text-xs sm:text-sm font-semibold text-[#003B73] mt-1 uppercase tracking-wider">Soporte Técnico</p>
@@ -134,3 +139,44 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </main>
 </Layout>
+
+<script>
+  /**
+   * Anima la cifra de familias de 0 a 10.000 con formato de miles en Colombia (punto decimal).
+   */
+  function animateFamiliesCounter() {
+    const counterElement = document.getElementById('families-counter');
+    if (!counterElement) return;
+
+    const targetValue = 10000;
+    const duration = 2000; // 2 segundos de animación
+    const startTime = performance.now();
+
+    function updateNumber(currentTime: number) {
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+
+      // Curva de desaceleración suave (easeOutCubic)
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      const currentValue = Math.floor(easeProgress * targetValue);
+
+      // Formateo con punto de miles (ej: 10.000)
+      counterElement.textContent = currentValue.toLocaleString('es-CO');
+
+      if (progress < 1) {
+        requestAnimationFrame(updateNumber);
+      } else {
+        counterElement.textContent = targetValue.toLocaleString('es-CO');
+      }
+    }
+
+    requestAnimationFrame(updateNumber);
+  }
+
+  // Inicialización inmediata al cargar el DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateFamiliesCounter);
+  } else {
+    animateFamiliesCounter();
+  }
+</script>
