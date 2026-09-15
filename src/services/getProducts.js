@@ -15,11 +15,12 @@ const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbzWRF-i8FAUK5H
  * @typedef {Object} Product
  * @property {string|number} id - Identificador único del producto.
  * @property {string} title - Nombre o título comercial del equipo/servicio.
+ * @property {string} description - Ficha técnica o descripción en texto plano del producto.
  * @property {number} price - Precio unitario del producto en Pesos Colombianos (COP).
  * @property {string} image - URL de la imagen principal/portada del producto.
  * @property {string[]} images - Listado completo de URLs de imágenes del producto.
  * @property {boolean} available - Estado de disponibilidad e inventario actual.
- * @property {string} category - Categoría a la que pertenece (ej. Oxigenoterapia, Terapia del Sueño).
+ * @property {string} category - Categoría a la que pertenece (ej. Oxigenoterapia, Terapia del Sueño, Accesorios).
  */
 
 /**
@@ -27,8 +28,8 @@ const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbzWRF-i8FAUK5H
  * 
  * Utiliza `{ cache: 'no-store' }` para evitar la memoria caché en SSR (Vercel)
  * y garantizar que las actualizaciones en la hoja de cálculo se reflejen en vivo.
- * Además, normaliza los tipos de datos (precios a Number, disponibilidad a Boolean
- * y separa múltiples imágenes divididas por comas en la celda de la hoja).
+ * Además, normaliza los tipos de datos (precios a Number, disponibilidad a Boolean,
+ * categorías, descripciones y separa múltiples imágenes divididas por comas en la celda).
  * 
  * @async
  * @returns {Promise<Product[]>} Promesa que resuelve al listado de productos o a un arreglo vacío `[]` en caso de fallo.
@@ -43,7 +44,7 @@ export async function getProducts() {
     
     const data = await response.json();
 
-    // Normalización de datos y procesamiento de múltiples imágenes
+    // Normalización de datos y procesamiento de propiedades
     return data.map(item => {
       // Captura la propiedad image o imagen tal cual viene de la hoja
       const rawImage = String(item.image || item.imagen || item.image_url || '').trim();
@@ -63,6 +64,9 @@ export async function getProducts() {
 
       return {
         ...item,
+        title: String(item.title || item.titulo || '').trim(),
+        description: String(item.description || item.descripcion || '').trim(),
+        category: String(item.category || item.categoria || '').trim(),
         price: Number(item.price) || 0,
         available: typeof item.available === 'boolean' 
           ? item.available 

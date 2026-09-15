@@ -22,7 +22,7 @@ const allProducts = await getProducts();
  * Filtro de productos pertenecientes a la categoría de Oxigenoterapia Avanzada.
  */
 const oxigenoterapiaProducts = allProducts.filter(
-  p => p.category === "Oxigenoterapia Avanzada"
+  p => p.category === "Oxigenoterapia Avanzada" || p.category === "Oxigenoterapia"
 );
 
 /**
@@ -31,11 +31,18 @@ const oxigenoterapiaProducts = allProducts.filter(
 const suenoProducts = allProducts.filter(
   p => p.category === "Terapia del Sueño"
 );
+
+/**
+ * Filtro de productos pertenecientes a la categoría de Accesorios.
+ */
+const accesoriosProducts = allProducts.filter(
+  p => p.category === "Accesorios"
+);
 ---
 
 <Layout 
   title={`Catálogo de Equipos Médicos | ${SITE_CONFIG.name}`}
-  description="Catálogo de oxigenoterapia avanzada y equipos de terapia del sueño CPAP/BiPAP con registro INVIMA en Colombia."
+  description="Catálogo de oxigenoterapia avanzada, terapia del sueño CPAP/BiPAP y accesorios respiratorios con registro INVIMA en Colombia."
 >
   <!-- Encabezado de la Página con Gradiente Corporativo -->
   <section class="bg-gradient-to-b from-[#003B73] via-slate-900 to-slate-900 text-white py-14">
@@ -44,7 +51,7 @@ const suenoProducts = allProducts.filter(
         Catálogo Especializado
       </span>
       <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
-        Equipos de Oxigenoterapia & Terapia del Sueño
+        Equipos de Oxigenoterapia, Terapia del Sueño & Accesorios
       </h1>
       <p class="mt-4 text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
         Explora nuestros equipos homologados con garantía oficial y soporte técnico directo en Colombia.
@@ -64,6 +71,12 @@ const suenoProducts = allProducts.filter(
         >
           <span aria-hidden="true">🌙</span> Terapia del Sueño (CPAP / BiPAP)
         </a>
+        <a 
+          href="#accesorios" 
+          class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-[#0082C3] text-white font-semibold text-sm transition-all shadow-xs flex items-center gap-2 border border-white/10"
+        >
+          <span aria-hidden="true">🩺</span> Accesorios Respiratorios
+        </a>
       </nav>
     </div>
   </section>
@@ -79,7 +92,7 @@ const suenoProducts = allProducts.filter(
           </div>
           <div>
             <h2 id="heading-oxigenoterapia" class="text-2xl font-extrabold text-[#003B73]">Oxigenoterapia Avanzada</h2>
-            <p class="text-sm text-slate-600">Concentradores estacionarios, portátiles y accesorios respiratorios.</p>
+            <p class="text-sm text-slate-600">Concentradores estacionarios y portátiles de flujo continuo y pulsado.</p>
           </div>
         </div>
       </div>
@@ -100,6 +113,22 @@ const suenoProducts = allProducts.filter(
         </div>
       </div>
       <ProductGrid products={suenoProducts} />
+    </section>
+
+    <!-- SECCIÓN 3: Accesorios Respiratorios -->
+    <section id="accesorios" class="scroll-mt-24" aria-labelledby="heading-accesorios">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <div class="flex items-center gap-3 border-b border-slate-200 pb-4">
+          <div class="w-10 h-10 rounded-xl bg-slate-700 text-white flex items-center justify-center font-bold text-xl shadow-xs" aria-hidden="true">
+            🩺
+          </div>
+          <div>
+            <h2 id="heading-accesorios" class="text-2xl font-extrabold text-[#003B73]">Accesorios</h2>
+            <p class="text-sm text-slate-600">Baterías, cargadores y accesorios para equipos respiratorios.</p>
+          </div>
+        </div>
+      </div>
+      <ProductGrid products={accesoriosProducts} />
     </section>
 
   </main>
