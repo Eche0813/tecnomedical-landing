@@ -36,13 +36,18 @@ const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbzWRF-i8FAUK5H
  */
 export async function getProducts() {
   try {
-    const response = await fetch(GOOGLE_SHEET_API, { cache: 'no-store' });
+    const response = await fetch(GOOGLE_SHEET_API, { cache: 'no-store', redirect: 'follow' });
     
     if (!response.ok) {
-      throw new Error(`Error HTTP ${response.status}: No se pudo conectar con la base de datos de Google Sheets`);
+      console.warn(`[getProducts Warning] Google Sheets devolvió status: ${response.status}`);
+      return []; // Devolvemos un arreglo vacío en lugar de romper el renderizado
     }
     
     const data = await response.json();
+    if (!Array.isArray(data)) {
+      console.warn("[getProducts Warning] La respuesta de Google Sheets no es un arreglo:", data);
+      return []; // Devolvemos un arreglo vacío en caso de estructura inesperada
+    }
 
     // Normalización de datos y procesamiento de propiedades
     return data.map(item => {
