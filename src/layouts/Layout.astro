@@ -1,7 +1,7 @@
 ---
 /**
  * @fileoverview Layout principal de la aplicación TECNOMEDICALS S.A.S.
- * Define la estructura HTML base, metas SEO, fuentes globales, header adaptativo y footer.
+ * Define la estructura HTML base, metas SEO, preconexiones DNS, fuentes globales, header adaptativo y footer.
  */
 
 import '../styles/global.css';
@@ -46,81 +46,91 @@ const headerWhatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${en
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
 
+    <!-- Meta Tags Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(image, Astro.url)} />
 
+    <!-- Meta Tags Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={Astro.url} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Preconexión DNS crítica para acelerar imágenes de Google y fuentes -->
+    <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fuente Inter con font-display=swap para evitar bloqueo de renderizado -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   </head>
   
   <body class="bg-slate-50 text-[#1A1A1A] font-sans antialiased selection:bg-[#0082C3] selection:text-white flex flex-col min-h-screen">
     
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <a href="/" class="flex items-center gap-2.5 sm:gap-3 group no-underline shrink-0">
-              <img 
-                src="/Logo.jpeg" 
-                alt="Logo Tecnomedicals S.A.S." 
-                class="h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-105"
-              />
-              <div class="flex flex-col">
-                <span class="text-xl sm:text-2xl md:text-3xl font-black text-[#0082C3] tracking-tight leading-none">
-                  TECNOMEDICALS <span class="text-[#003B73]">S.A.S.</span>
-                </span>
-              </div>
-            </a>
-            
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Navegación principal">
-              <a href="/" class="text-slate-700 hover:text-[#0082C3] transition">Inicio</a>
-              <a href="/catalogo" class="text-slate-700 hover:text-[#0082C3] transition font-semibold">Catálogo</a>
-              <a href="/quienes-somos" class="text-slate-700 hover:text-[#0082C3] transition font-semibold">Quiénes Somos</a>
-              <a 
-                href={headerWhatsappUrl} 
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center px-4 py-2 rounded-xl bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold text-sm transition-all shadow-xs hover:shadow-md"
-              >
-                Contacto
-              </a>
-            </nav>
-
-            <button 
-              id="menu-toggle-btn"
-              type="button" 
-              class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
-              aria-label="Abrir o cerrar menú de navegación"
-              aria-expanded="false"
-            >
-              <svg id="menu-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-        </div>
-
-        <div id="mobile-dropdown" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 shadow-lg">
-          <a href="/" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Inicio</a>
-          <a href="/catalogo" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Catálogo</a>
-          <a href="/quienes-somos" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Quiénes Somos</a>
-          <a 
-            href={headerWhatsappUrl} 
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block text-center w-full mt-2 px-4 py-3 rounded-xl bg-[#0082C3] text-white font-bold text-sm shadow-xs"
-          >
-            Contacto
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          
+          <a href="/" class="flex items-center gap-2.5 sm:gap-3 group no-underline shrink-0">
+            <img 
+              src="/Logo.jpeg" 
+              alt="Logo Tecnomedicals S.A.S." 
+              class="h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-105"
+              loading="eager"
+              fetchpriority="high"
+              width="180"
+              height="64"
+            />
+            <div class="flex flex-col">
+              <span class="text-xl sm:text-2xl md:text-3xl font-black text-[#0082C3] tracking-tight leading-none">
+                TECNOMEDICALS <span class="text-[#003B73]">S.A.S.</span>
+              </span>
+            </div>
           </a>
-        </div>
+          
+          <nav class="hidden md:flex items-center gap-6 text-sm font-medium" aria-label="Navegación principal">
+            <a href="/" class="text-slate-700 hover:text-[#0082C3] transition">Inicio</a>
+            <a href="/catalogo" class="text-slate-700 hover:text-[#0082C3] transition font-semibold">Catálogo</a>
+            <a href="/quienes-somos" class="text-slate-700 hover:text-[#0082C3] transition font-semibold">Quiénes Somos</a>
+            <a 
+              href={headerWhatsappUrl} 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-4 py-2 rounded-xl bg-[#0082C3] hover:bg-[#003B73] text-white font-semibold text-sm transition-all shadow-xs hover:shadow-md"
+            >
+              Contacto
+            </a>
+          </nav>
+
+          <button 
+            id="menu-toggle-btn"
+            type="button" 
+            class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#0082C3]"
+            aria-label="Abrir o cerrar menú de navegación"
+            aria-expanded="false"
+          >
+            <svg id="menu-icon" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+      </div>
+
+      <div id="mobile-dropdown" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 shadow-lg">
+        <a href="/" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Inicio</a>
+        <a href="/catalogo" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Catálogo</a>
+        <a href="/quienes-somos" class="block px-3 py-2.5 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#0082C3]">Quiénes Somos</a>
+        <a 
+          href={headerWhatsappUrl} 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block text-center w-full mt-2 px-4 py-3 rounded-xl bg-[#0082C3] text-white font-bold text-sm shadow-xs"
+        >
+          Contacto
+        </a>
+      </div>
     </header>
 
     <main class="flex-grow">

@@ -125,6 +125,7 @@ const formattedDescriptionHtml: string = formatDescription(description);
             alt={`Vista ${index + 1} de ${title}`}
             class={`carousel-img absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
             loading="lazy"
+            decoding="async"
             referrerpolicy="no-referrer"
             data-index={index}
             width="300"
