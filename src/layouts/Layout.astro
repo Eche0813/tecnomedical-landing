@@ -6,6 +6,7 @@
 
 import '../styles/global.css';
 import { SITE_CONFIG } from '../config/site';
+import Analytics from '@vercel/analytics/astro';
 
 /**
  * Propiedades aceptadas por el layout para personalizar el SEO por página.
@@ -178,5 +179,6 @@ const headerWhatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${en
       });
     </script>
 
+    <Analytics />
   </body>
 </html>
