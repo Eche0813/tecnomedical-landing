@@ -7,6 +7,15 @@
 // Desactiva el prerenderizado estático para forzar la consulta en vivo de productos vía SSR en cada petición
 export const prerender = false;
 
+// Configuración de Caché SWR en Servidor para Vercel
+// s-maxage=300 (Servidor responde al instante durante 5 min)
+// stale-while-revalidate=600 (Permite actualizar en segundo plano)
+Astro.response.headers.set(
+  'Cache-Control',
+  'public, s-maxage=300, stale-while-revalidate=600'
+);
+
+
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import HowItWorks from '../components/HowItWorks.astro';
