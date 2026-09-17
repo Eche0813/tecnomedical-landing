@@ -1,60 +1,52 @@
 /**
- * @fileoverview Servicio de integración con la API de Google Apps Script.
- * Encargado de consultar y sanitizar el catálogo de productos en tiempo real desde Google Sheets.
+ * @fileoverview Servicio de consulta a Google Sheets con reintentos automáticos para evitar respuestas vacías en SWR.
  * @module services/getProducts
  */
 
-/**
- * URL pública del endpoint desplegado en Google Apps Script (Web App).
- * @type {string}
- */
 const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbzWRF-i8FAUK5HMg_pxTL4G3tundv6MhO9vCwpO7r4olijbXTNeFUOO-cp1eUeciD8t/exec";
 
 /**
- * Estructura de un producto del catálogo procesado por la aplicación.
- * @typedef {Object} Product
- * @property {string|number} id - Identificador único del producto.
- * @property {string} title - Nombre o título comercial del equipo/servicio.
- * @property {string} description - Ficha técnica o descripción en texto plano del producto.
- * @property {number} price - Precio unitario del producto en Pesos Colombianos (COP).
- * @property {string} image - URL de la imagen principal/portada del producto.
- * @property {string[]} images - Listado completo de URLs de imágenes del producto.
- * @property {boolean} available - Estado de disponibilidad e inventario actual.
- * @property {string} category - Categoría a la que pertenece (ej. Oxigenoterapia, Terapia del Sueño, Accesorios).
+ * Realiza la petición a la API con mecanismo de reintentos
  */
+async function fetchWithRetry(url, options, retries = 2, delay = 1000) {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok) {
+        const data = await response.json();
+        // Si responde un arreglo con elementos, la consulta fue exitosa
+        if (Array.isArray(data) && data.length > 0) {
+          return data;
+        }
+      }
+    } catch (err) {
+      console.warn(`[getProducts] Intento ${i + 1} fallido. Reintentando...`);
+    }
 
-/**
- * Obtiene el catálogo de productos actualizado desde Google Sheets.
- * 
- * Utiliza `{ cache: 'no-store' }` para evitar la memoria caché en SSR (Vercel)
- * y garantizar que las actualizaciones en la hoja de cálculo se reflejen en vivo.
- * Además, normaliza los tipos de datos (precios a Number, disponibilidad a Boolean,
- * categorías, descripciones y separa múltiples imágenes divididas por comas en la celda).
- * 
- * @async
- * @returns {Promise<Product[]>} Promesa que resuelve al listado de productos o a un arreglo vacío `[]` en caso de fallo.
- */
+    // Esperar antes del siguiente reintento si no es el último intento
+    if (i < retries) {
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+  return null;
+}
+
 export async function getProducts() {
   try {
-    const response = await fetch(GOOGLE_SHEET_API, { cache: 'no-store', redirect: 'follow' });
-    
-    if (!response.ok) {
-      console.warn(`[getProducts Warning] Google Sheets devolvió status: ${response.status}`);
-      return []; // Devolvemos un arreglo vacío en lugar de romper el renderizado
-    }
-    
-    const data = await response.json();
-    if (!Array.isArray(data)) {
-      console.warn("[getProducts Warning] La respuesta de Google Sheets no es un arreglo:", data);
-      return []; // Devolvemos un arreglo vacío en caso de estructura inesperada
+    const rawData = await fetchWithRetry(GOOGLE_SHEET_API, {
+      cache: 'no-store',
+      redirect: 'follow'
+    }, 2, 800); // 2 reintentos con 800ms de espera
+
+    // Si tras los reintentos no hay datos válidos, loguear advertencia
+    if (!rawData) {
+      console.error("[getProducts Error] Google Apps Script no respondió datos válidos tras reintentos.");
+      return [];
     }
 
-    // Normalización de datos y procesamiento de propiedades
-    return data.map(item => {
-      // Captura la propiedad image o imagen tal cual viene de la hoja
+    return rawData.map(item => {
       const rawImage = String(item.image || item.imagen || item.image_url || '').trim();
 
-      // Separa por comas y elimina comillas simples/dobles o espacios residuales
       let imagesArray = rawImage 
         ? rawImage
             .split(',')
@@ -62,7 +54,6 @@ export async function getProducts() {
             .filter(url => url.length > 0)
         : [];
 
-      // Si no hay imágenes en la lista, usamos la imagen original o la de respaldo
       if (imagesArray.length === 0) {
         imagesArray = [rawImage || '/placeholder.jpg'];
       }
@@ -71,18 +62,18 @@ export async function getProducts() {
         ...item,
         title: String(item.title || item.titulo || '').trim(),
         description: String(item.description || item.descripcion || '').trim(),
-        category: String(item.category || item.categoria || '').trim(),
+        category: String(item.category || item.categoria || 'Accesorios').trim(),
         price: Number(item.price) || 0,
         available: typeof item.available === 'boolean' 
           ? item.available 
           : String(item.available).toUpperCase() === 'TRUE',
-        image: imagesArray[0],  // Primera URL limpia
-        images: imagesArray     // Arreglo completo de URLs
+        image: imagesArray[0],
+        images: imagesArray
       };
     });
 
   } catch (error) {
     console.error("[getProducts Service Error]:", error);
-    return []; // Fallback seguro para evitar errores de renderizado en la UI
+    return []; //Fallback a un arreglo vacío en caso de error
   }
 }
